@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Fantasy Football Watchlist</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+
+</head>
+
+<body>
+
+  <header class="jumbotron">
+    <div class='container-fluid'>
+      <h1 class="page-title text-center">Fantasy Football Watchlist</h1>
+    </div>
+  </header>
+  <nav>
+      <ul class="nav nav-tabs">
+          <li class="nav-item">
+              <a class="nav-link" href="index.html">My Watchlist</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link active" href="#">Players</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="nfl-schedule.html">NFL Schedule</a>
+          </li>
+      </ul>
+  </nav>
+
+  <script id="players-list" type="text/x-handlebars/template">
+          {{#each this}}
+              <li class='list-group-item'>
+                  <span>{{this.displayName}}</span> {{this.position}}<b class='pull-right'>{{this.team}}</b>
+              </li>
+          {{/each}}
+  </script>
+
+  <main>
+
+    <ul class='list-group' id='playersList'>
+    </ul>
+
+  </main>
+
+  <script src="assets/js/vendor.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+
+</html>

@@ -23,18 +23,18 @@
     <nav>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" href="#">My Watchlist</a>
+                <a class="nav-link" href="#">My Watchlist</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="all-players.html">Players</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="nfl-schedule.html">NFL Schedule</a>
+                <a class="nav-link active" href="nfl-schedule.html">NFL Schedule</a>
             </li>
         </ul>
     </nav>
 
-    <script id="my-players-list" type="text/x-handlebars/template">
+    <script id="schedule-list" type="text/x-handlebars/template">
         {{#each this}}
         <li class='list-group-item'>
             <span>{{this.displayName}}</span> {{this.position}}<b class='pull-right'>{{this.team}}</b>
@@ -44,7 +44,7 @@
 
     <main>
 
-        <ul class='list-group' id='myPlayersList'>
+        <ul class='list-group' id='scheduleList'>
         </ul>
 
     </main>
