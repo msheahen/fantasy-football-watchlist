@@ -32,7 +32,7 @@ self.addEventListener('activate', function(event) {
 			return Promise.all(
 				cacheNames.filter(function(cacheName) {
 
-					return cacheName.startsWith('mtba-trans-') &&
+					return cacheName.startsWith('fantasy-football-watchlist-') &&
 					cacheName != currentCacheName;
 				}).map(function(cacheName) {
 

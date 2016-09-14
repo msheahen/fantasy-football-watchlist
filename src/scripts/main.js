@@ -7,13 +7,13 @@ Index controller stuff!
 
 function openDatabase() {
     if (!navigator.serviceWorker) {
-        displayMessage("WARNING: your web browser doesn't fully support this app", null, "dismiss");
+      /*  displayMessage("WARNING: your web browser doesn't fully support this app", null, "dismiss");*/
         return Promise.resolve();
     }
 
     return idb.open('fantasy-football-watchlist', 1, function(upgradeDb) {
         var store = upgradeDb.createObjectStore('players', {
-            keyPath: 'player_id'
+            keyPath: 'playerId'
         });
     });
 }
@@ -36,7 +36,7 @@ Register our little helper!
 IndexController.prototype.registerServiceWorker = function() {
 
 	if ( !('serviceWorker' in navigator) ) {
-    displayMessage("WARNING: your web browser doesn't fully support this app.  Try this app in chrome.", null, "dismiss");
+    alert("WARNING: your web browser doesn't fully support this app.  Try this app in chrome.", null, "dismiss");
 		return;
 	}
 
@@ -46,10 +46,10 @@ IndexController.prototype.registerServiceWorker = function() {
 
 		if (reg.waiting) {
 
-			displayMessage("New update available!", "Refresh", "dismiss", function(worker){
+			/*displayMessage("New update available!", "Refresh", "dismiss", function(worker){
 				worker.postMessage({ action: 'skipWaiting' });
 			}, reg.waiting);
-
+      */
 			return;
 		}
 
@@ -85,9 +85,9 @@ IndexController.prototype.trackInstalling = function(worker) {
   var indexController = this;
   worker.addEventListener('statechange', function() {
     if (worker.state == 'installed') {
-      displayMessage("New Update available!", "update now!", "dismiss", function(worker) {
+      /*displayMessage("New Update available!", "update now!", "dismiss", function(worker) {
 				worker.postMessage({ action: 'skipWaiting' });
-			}, worker);
+			}, worker);*/
     }
   });
 };

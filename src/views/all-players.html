@@ -14,42 +14,52 @@
 
 <body>
 
-  <header class="jumbotron">
-    <div class='container-fluid'>
-      <h1 class="page-title text-center">Fantasy Football Watchlist</h1>
-    </div>
-  </header>
-  <nav>
-      <ul class="nav nav-tabs">
-          <li class="nav-item">
-              <a class="nav-link" href="index.html">My Watchlist</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link active" href="#">Players</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="nfl-schedule.html">NFL Schedule</a>
-          </li>
-      </ul>
-  </nav>
+    <header class="jumbotron">
+        <div class='container-fluid'>
+            <h1 class="page-title text-center">Fantasy Football Watchlist</h1>
+        </div>
+    </header>
+    <nav>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/">My Watchlist</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Players</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="nfl-schedule.html">NFL Schedule</a>
+            </li>
+        </ul>
+    </nav>
 
-  <script id="players-list" type="text/x-handlebars/template">
-          {{#each this}}
-              <li class='list-group-item'>
-                  <span>{{this.displayName}}</span> {{this.position}}<b class='pull-right'>{{this.team}}</b>
-              </li>
-          {{/each}}
-  </script>
+    <script id="players-list" type="text/x-handlebars/template">
+        {{#each this}}
+        <li class='list-group-item'>
+            <span>{{this.displayName}}</span> {{this.position}}<b>{{this.team}}</b>
+            <button class='btn btn-primary player-to-add' id="{{this.playerId}}">+</button>
+        </li>
+        {{/each}}
+    </script>
 
-  <main>
+    <main>
+        <nav>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" id='all' class="btn btn-secondary">All</button>
+                <button type="button" id='qb' class="btn btn-secondary">QB</button>
+                <button type="button" id='rb' class="btn btn-secondary">RB</button>
+                <button type="button" id='wr' class="btn btn-secondary">WR</button>
+                <button type="button" id='te' class="btn btn-secondary">TE</button>
+                <button type="button" id='flex' class="btn btn-secondary">FLEX</button>
+            </div>
+        </nav>
+        <ul class='list-group' id='playersList'>
+        </ul>
 
-    <ul class='list-group' id='playersList'>
-    </ul>
+    </main>
 
-  </main>
-
-  <script src="assets/js/vendor.js"></script>
-  <script src="assets/js/app.js"></script>
+    <script src="assets/js/vendor.js"></script>
+    <script src="assets/js/app.js"></script>
 </body>
 
 </html>

@@ -23,7 +23,7 @@
     <nav>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" href="#">My Watchlist</a>
+                <a class="nav-link" href="/">My Watchlist</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="all-players.html">Players</a>
@@ -35,17 +35,20 @@
     </nav>
 
     <script id="schedule-list" type="text/x-handlebars/template">
+      <ul class='list-group'>
+
         {{#each this}}
         <li class='list-group-item'>
-            <span>{{this.displayName}}</span> {{this.position}}<b class='pull-right'>{{this.team}}</b>
+            <div class='vs-container text-center'><span class='away-team'>{{this.awayTeam}}</span> @ <span class='home-team'>{{this.homeTeam}}</span></div> <div class='game-time text-center'>{{gameDate}} {{gameTimeET}}ET</div>
         </li>
         {{/each}}
+      </ul>
     </script>
 
     <main>
 
-        <ul class='list-group' id='scheduleList'>
-        </ul>
+        <div id='scheduleList'>
+        </div>
 
     </main>
 
