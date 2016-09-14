@@ -1,19 +1,19 @@
 {
-  "short_name": "NFL Watchlist",
-  "name": "NFL Watchlist",
+  "short_name": "FFball Watchlist",
+  "name": "Fantasy Football Watchlist",
   "icons": [
     {
-      "src": "assets/images/ic-launcher.png",
+      "src": "assets/images/football-launcher.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "assets/images/ic-launcher.png",
+      "src": "assets/images/football-launcher.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "assets/images/ic-launcher.png",
+      "src": "assets/images/football-launcher.png",
       "sizes": "192x192",
       "type": "image/png"
     }
