@@ -10,8 +10,8 @@ if(path == '/' || path == '/index.html'){
       console.log('No database!');
       return;
     }
-		var tx = db.transaction('players', 'readwrite');
-		var store = tx.objectStore('players');
+		var tx = db.transaction('myplayers', 'readwrite');
+		var store = tx.objectStore('myplayers');
 
 		return store.getAll();
 
@@ -33,6 +33,28 @@ if(path == '/' || path == '/index.html'){
 
 	}).catch(function(error){
 
+  });
+
+  $("#all").click(function() {
+      filterPlayersBy("ALL");
+  });
+  $("#qb").click(function() {
+      filterPlayersBy("QB");
+  });
+  $("#rb").click(function() {
+      filterPlayersBy("RB");
+  });
+  $("#k").click(function() {
+      filterPlayersBy("K");
+  });
+  $("#wr").click(function() {
+      filterPlayersBy("WR");
+  });
+  $("#te").click(function() {
+      filterPlayersBy("TE");
+  });
+  $("#flex").click(function() {
+      filterPlayersBy("FLEX");
   });
 
 }

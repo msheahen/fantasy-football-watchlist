@@ -35,15 +35,26 @@
     </nav>
 
     <script id="my-players-list" type="text/x-handlebars/template">
-        {{#each this}}
-        <li class='list-group-item'>
-            <span>{{this.displayName}}</span> {{this.position}}<b class='pull-right'>{{this.team}}</b>
-        </li>
-        {{/each}}
+      {{#each this}}
+      <li class='list-group-item'>
+          <img src="{{this.PhotoUrl}}" height="50px"><span>{{this.Name}}</span> <span>{{this.Position}}<b>{{this.Team}}</b></span>
+          <button class='btn btn-primary player-to-remove' id="{{this.PlayerID}}">-</button>
+      </li>
+      {{/each}}
     </script>
 
     <main>
-
+      <nav>
+          <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" id='all' class="btn btn-secondary">All</button>
+              <button type="button" id='qb' class="btn btn-secondary">QB</button>
+              <button type="button" id='rb' class="btn btn-secondary">RB</button>
+              <button type="button" id='wr' class="btn btn-secondary">WR</button>
+              <button type="button" id='te' class="btn btn-secondary">TE</button>
+              <button type="button" id="k" class='btn btn-secondary'>K</button>
+              <button type="button" id='flex' class="btn btn-secondary">FLEX</button>
+          </div>
+      </nav>
         <ul class='list-group' id='myPlayersList'>
         </ul>
 
