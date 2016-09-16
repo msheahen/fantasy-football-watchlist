@@ -22,7 +22,7 @@
     <nav>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">My Watchlist</a>
+                <a class="nav-link" href="/">My Watchlist</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="#">Players</a>
@@ -36,8 +36,8 @@
     <script id="players-list" type="text/x-handlebars/template">
         {{#each this}}
         <li class='list-group-item'>
-            <span>{{this.displayName}}</span> {{this.position}}<b>{{this.team}}</b>
-            <button class='btn btn-primary player-to-add' id="{{this.playerId}}">+</button>
+            <img src="{{this.PhotoUrl}}" height="50px" ><span>{{this.Name}}</span> <span>{{this.Position}}    <b>{{this.Team}}</b></span>
+            <button class='btn btn-primary player-to-add' id="{{this.PlayerID}}">+</button>
         </li>
         {{/each}}
     </script>
@@ -50,6 +50,7 @@
                 <button type="button" id='rb' class="btn btn-secondary">RB</button>
                 <button type="button" id='wr' class="btn btn-secondary">WR</button>
                 <button type="button" id='te' class="btn btn-secondary">TE</button>
+                <button type="button" id="k" class='btn btn-secondary'>K</button>
                 <button type="button" id='flex' class="btn btn-secondary">FLEX</button>
             </div>
         </nav>
