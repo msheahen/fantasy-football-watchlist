@@ -36,7 +36,7 @@
     <script id="players-list" type="text/x-handlebars/template">
         {{#each this}}
         <li class='list-group-item'>
-            <img src="{{this.PhotoUrl}}" height="50px"><span>{{this.Name}}</span> <span>{{this.Position}}<b>{{this.Team}}</b></span>
+            <img src="{{this.PhotoUrl}}" height="50px" ><span>{{this.Name}}</span> <span>{{this.Position}}    <b>{{this.Team}}</b></span>
             <button class='btn btn-primary player-to-add' id="{{this.PlayerID}}">+</button>
         </li>
         {{/each}}
