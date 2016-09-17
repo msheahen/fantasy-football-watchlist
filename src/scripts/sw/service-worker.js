@@ -59,3 +59,9 @@ self.addEventListener('message', function(event) {
     self.skipWaiting();
   }
 });
+
+
+self.addEventListener('push', function(event) {
+  console.log('Push message received', event);
+  // TODO
+});

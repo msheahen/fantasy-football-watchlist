@@ -28,7 +28,6 @@ if(path == '/' || path == '/index.html'){
       var theTemplate = Handlebars.compile(theTemplateScript);
       $("#myPlayersList").append(theTemplate(players));
 
-
 		}
 
 	}).catch(function(error){

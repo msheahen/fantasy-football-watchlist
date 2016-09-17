@@ -1,6 +1,6 @@
 addPlayerToWatchlist = function(id) {
 
-            var player = allPlayers.filter(function(entry) {
+            var player = allplayers.filter(function(entry) {
                 return entry.PlayerID === parseInt(id);
             });
 
@@ -36,7 +36,7 @@ filterPlayersBy = function(param) {
 
     var filteredPlayersList;
       if(param == "ALL"){
-        filteredPlayersList = allPlayers;
+        filteredPlayersList = allplayers;
       }else if (param == "FLEX"){
         filteredPlayersList = allPlayers.filter(function(entry){
                 return entry.Position === "RB" ||
@@ -100,10 +100,6 @@ $(document).ready(function() {
     		}
       }).catch(function(err){
           fetchPlayers();
-
-            
-
-
       });
 
       /* add event listeners to DOM */

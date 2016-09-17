@@ -1,10 +1,9 @@
 /* Global variables */
-
 var path = window.location.pathname;
 var page = path.split("/").pop();
 var allplayers;
 var apikey = "9130e31adba74e27b4c44d17ac5f29e5";
-var currentweek;
+var currentweek = 0;
 
 function sortAscByKey(array, key) {
     return array.sort(function(a, b) {
@@ -40,12 +39,12 @@ function fetchPlayers() {
         })
         .done(function(data) {
             /* return only the offensive players */
-             var players = data.filter(function(entry) {
+            var players = data.filter(function(entry) {
                 return (entry.Position === "QB" || entry.Position === "RB" || entry.Position === "WR" || entry.Position === "K" || entry.Position === "TE") &&
                     entry.Active === true;
             });
 
-            allplayers = sortDscByKey(players, "UpcomingYahooSalary");
+            allplayers = sortDscByKey(players, "UpcomingSalary");
             var theTemplateScript = $("#players-list").html();
             var theTemplate = Handlebars.compile(theTemplateScript);
             $("#playersList").append(theTemplate(allplayers));
@@ -65,7 +64,7 @@ function fetchPlayers() {
                     Active: myPlayer.Active,
                     Injured: myPlayer.Injured,
                     PhotoUrl: myPlayer.PhotoUrl,
-                    Price: myPlayer.UpcomingYahooSalary
+                    Price: myPlayer.UpcomingSalary,
                 });
             });
 
@@ -114,15 +113,72 @@ function openDatabase() {
 }
 
 
-/*
- Defining the index controller prototype
-*/
-function IndexController() {
+/* check to see if any of my watched players are injured */
+getInjuries = function(myPlayers) {
 
-    this.db = openDatabase();
-    this.registerServiceWorker();
+    var params = {
+        // Request parameters
+    };
 
+    $.ajax({
+            url: "https://api.fantasydata.net/v3/nfl/stats/JSON/Injuries/2016REG/" + currentweek + "?" + $.param(params),
+            beforeSend: function(xhrObj) {
+                // Request headers
+                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", apikey);
+            },
+            type: "GET",
+            // Request body
+            data: "{body}",
+        })
+        .done(function(injuredPlayers) {
+
+            var myInjuredPlayers = injuredPlayers.filter(function(player) {
+                for (var i = 0; i < myPlayers.length; i++) {
+                    return player.PlayerID == myPlayers[i].PlayerID && (player.InjuryID != myPlayers[i].Injured) && (player.DeclaredInactive != myPlayers[i].Active);
+                }
+
+
+                /* TODO: use myInjuredPlayers array to update
+                status in db and send notifications*/
+
+            });
+        }).
+    fail(function() {
+
+    });
+
+};
+
+/*** salary change, && scoring details!
+My current fantasydata.com subscription only allows
+changes after games. ***/
+function getWatchlistDetails(myPlayers) {
+
+    var params = {
+        // Request parameters
+    };
+
+
+    myPlayers.forEach(function(player){
+    $.ajax({
+            url: "https://api.fantasydata.net/v3/nfl/stats/JSON/Player/" + player.PlayerID + "?" + $.param(params),
+            beforeSend: function(xhrObj) {
+                // Request headers
+                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", apikey);
+            },
+            type: "GET",
+            // Request body
+            data: "{body}",
+        })
+        .done(function(data) {
+          console.log(data);
+        })
+        .fail(function() {
+
+        });
+      });
 }
+
 
 function setCurrentWeek() {
 
@@ -141,9 +197,9 @@ function setCurrentWeek() {
 
     }).catch(function(err) {}).then(function(response) {
 
-      var params = {
-          // Request parameters
-      };
+        var params = {
+            // Request parameters
+        };
 
         $.ajax({
                 url: "https://api.fantasydata.net/v3/nfl/scores/JSON/CurrentWeek?" + $.param(params),
@@ -160,7 +216,7 @@ function setCurrentWeek() {
 
                 /*we either do not have a week yet or we're out of date.
                 We'll try and fetch the latest standings*/
-                if (data == 'undefined' || currentweek != data) {
+                if (currentweek == 'undefined' || currentweek != data) {
 
 
                     var db = openDatabase();
@@ -169,7 +225,7 @@ function setCurrentWeek() {
                         var store = tx.objectStore('currentweek');
 
                         var info = {
-                          week: data
+                            week: data
                         };
 
                         store.put(info);
@@ -185,7 +241,7 @@ function setCurrentWeek() {
 
             })
             .fail(function() {
-              console.log('unable to reach api');
+                console.log('unable to reach api');
             });
 
 
@@ -193,6 +249,16 @@ function setCurrentWeek() {
 
 }
 
+
+/*
+ Defining the index controller prototype
+*/
+function IndexController() {
+
+    this.db = openDatabase();
+    this.registerServiceWorker();
+
+}
 
 /*
 Register our little helper!
@@ -209,6 +275,8 @@ IndexController.prototype.registerServiceWorker = function() {
             scope: './'
         })
         .then(function(reg) {
+
+
 
             if (reg.waiting) {
 
@@ -233,6 +301,11 @@ IndexController.prototype.registerServiceWorker = function() {
             console.log('Service Worker Failed to Register', err);
         });
 
+        // ask the user if they'd like to receive push notifications
+        Notification.requestPermission(function(result) {
+          //console.log(result);
+        });
+
     /* useful tip on preventing chrome from refreshing endlessly when
     update on reload is checked (from Jake Archibalds' wittr)*/
     var refreshing;
@@ -241,6 +314,7 @@ IndexController.prototype.registerServiceWorker = function() {
         window.location.reload();
         refreshing = true;
     });
+
 
 };
 
@@ -260,6 +334,28 @@ IndexController.prototype.trackInstalling = function(worker) {
 
 var Controller = new IndexController();
 
-$(document).ready(function(){
-  setCurrentWeek();
+$(document).ready(function() {
+    setCurrentWeek();
+
+    var db = openDatabase();
+    db.then(function(db) {
+
+        if (!db) {
+            console.log('No database!');
+            return;
+        }
+        var tx = db.transaction('myplayers', 'readwrite');
+        var store = tx.objectStore('myplayers');
+
+        return store.getAll();
+    }).catch(function(err) {}).then(function(response) {
+        if (response.length === 0) {
+            /* no watched players to check...dont bother calling the api */
+
+        } else {
+            getInjuries(response);
+            getWatchlistDetails(response);
+        }
+    });
+
 });

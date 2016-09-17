@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Fantasy Football Watchlist</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+
+</head>
+
+<body>
+
+
+    <script id="my-players-details" type="text/x-handlebars/template">
+      <header class="jumbotron">
+          <div class='container-fluid'>
+              <h1 class="page-title text-center">{{this.Name}}</h1>
+          </div>
+
+      </header>
+      <nav>
+          <ul class="nav nav-tabs">
+              <li class="nav-item">
+                  <a class="nav-link active" href="#">My Watchlist</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="all-players.html">Players</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="nfl-schedule.html">NFL Schedule</a>
+              </li>
+          </ul>
+      </nav>
+          <img src="{{this.PhotoUrl}}" height="50px"><span>{{this.Name}}</span> <span>{{this.Position}}<b>{{this.Team}}</b></span>
+          <button class='btn btn-primary player-to-remove' id="{{this.PlayerID}}">-</button>
+          <!-- TODO add game log stats and latest box scores. -->
+    </script>
+
+    <main>
+      <div class='player-details'></div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyC3tNQLuYb9g9wiaQc6Hn-peZC3Kpm0Ixk",
+        authDomain: "fantasy-football-watchlist.firebaseapp.com",
+        databaseURL: "https://fantasy-football-watchlist.firebaseio.com",
+        storageBucket: "fantasy-football-watchlist.appspot.com",
+        messagingSenderId: "673776022250"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script src="assets/js/vendor.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+
+</html>
