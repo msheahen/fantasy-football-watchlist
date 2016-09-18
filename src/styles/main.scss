@@ -1,6 +1,8 @@
 body {
     background-color: #f5f5f5;
     font-family: sans-serif;
+    width:100%;
+    height:100%;
 }
 legend {
     font-size: 16px;
@@ -34,16 +36,46 @@ legend {
 .player-to-add{
   float:right;
   padding:5px;
-  height:100%;
+  height:40px;
+  width:40px;
   vertical-align:middle;
   text-align:center;
   margin:auto;
+  display:inline-block;
 }
 .player-to-remove{
   float:right;
   padding:5px;
-  height:100%;
+  height:40px;
+  width:40px;
   vertical-align:middle;
   text-align:center;
   margin:auto;
+  display:inline-block;
+}
+.positionInput{
+  visibility:hidden;
+}
+.positions{
+  padding-top:15px;
+}
+.positions > label{
+  cursor:pointer;
+}
+.positions > input:checked + label {
+    background: red;
+}
+.playerPhoto{
+  height:40px;
+  display:inline-block;
+}
+.currentSalary{
+  display:inline-block;
+  font-size:18px;
+  vertical-align:middle;
+}
+.playerContent{
+  display:inline-block;
+  width:calc(100% - 150px);
+  vertical-align:middle;
 }

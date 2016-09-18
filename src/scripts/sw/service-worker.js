@@ -1,4 +1,10 @@
 var currentCacheName = 'fantasy-football-watchlist-v1';
+var imageCache = 'fantasy-football-watchlist-images';
+
+var allCaches = [
+  currentCacheName,
+  imageCache
+];
 
 self.addEventListener('install', function(event) {
 
@@ -23,24 +29,19 @@ self.addEventListener('install', function(event) {
 
 });
 
-
 self.addEventListener('activate', function(event) {
-	event.waitUntil(
-
-    // Activate and make sure we upgrade if needed.
-		caches.keys().then(function(cacheNames) {
-			return Promise.all(
-				cacheNames.filter(function(cacheName) {
-
-					return cacheName.startsWith('fantasy-football-watchlist-') &&
-					cacheName != currentCacheName;
-				}).map(function(cacheName) {
-
-					return caches.delete(cacheName);
-				})
-			);
-		})
-	);
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.filter(function(cacheName) {
+          return cacheName.startsWith('fantasy-football-watchlist') &&
+                 !allCaches.includes(cacheName);
+        }).map(function(cacheName) {
+          return caches.delete(cacheName);
+        })
+      );
+    })
+  );
 });
 
 
@@ -63,5 +64,15 @@ self.addEventListener('message', function(event) {
 
 self.addEventListener('push', function(event) {
   console.log('Push message received', event);
+	self.registration.showNotification("SOMETHING HAPPENED!", {
+    body: 'Are you free tonight?',
+    icon: 'images/joe.png',
+    vibrate: [200, 100, 200, 100, 200, 100, 400],
+    tag: 'request',
+    actions: [
+      { action: 'yes', title: 'Yes!' },
+      { action: 'no', title: 'No'}
+    ]
+  });
   // TODO
 });

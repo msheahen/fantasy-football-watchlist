@@ -21,6 +21,10 @@ function sortDscByKey(array, key) {
     });
 }
 
+function setPlayerList(array) {
+    allplayers = array;
+}
+
 function fetchPlayers() {
 
     var params = {
@@ -41,10 +45,23 @@ function fetchPlayers() {
             /* return only the offensive players */
             var players = data.filter(function(entry) {
                 return (entry.Position === "QB" || entry.Position === "RB" || entry.Position === "WR" || entry.Position === "K" || entry.Position === "TE") &&
-                    entry.Active === true;
+                    entry.Active === true &&
+                    entry.UpcomingDraftKingsSalary !== null &&
+                    entry.DraftKingsPlayerID !== 592538 &&
+                    entry.DraftKingsPlayerID !== 262666 &&
+                    entry.DraftKingsPlayerID !== 744436 &&
+                    entry.DraftKingsPlayerID !== 598956 &&
+                    entry.DraftKingsPlayerID !== 749099 &&
+                    entry.DraftKingsPlayerID !== 690981;
             });
 
             allplayers = sortDscByKey(players, "UpcomingSalary");
+
+            allplayers.forEach(function(thisplayer) {
+
+                thisplayer.PhotoUrl = "https://d327rxwuxd0q0c.cloudfront.net/nfl/players/" + thisplayer.DraftKingsPlayerID + ".png";
+                //thisplayer.PlayerID = thisplayer.DraftKingsPlayerID;
+            });
             var theTemplateScript = $("#players-list").html();
             var theTemplate = Handlebars.compile(theTemplateScript);
             $("#playersList").append(theTemplate(allplayers));
@@ -139,7 +156,7 @@ getInjuries = function(myPlayers) {
 
 
                 /* TODO: use myInjuredPlayers array to update
-                status in db and send notifications*/
+                status in db and send notifications */
 
             });
         }).
@@ -159,24 +176,24 @@ function getWatchlistDetails(myPlayers) {
     };
 
 
-    myPlayers.forEach(function(player){
-    $.ajax({
-            url: "https://api.fantasydata.net/v3/nfl/stats/JSON/Player/" + player.PlayerID + "?" + $.param(params),
-            beforeSend: function(xhrObj) {
-                // Request headers
-                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", apikey);
-            },
-            type: "GET",
-            // Request body
-            data: "{body}",
-        })
-        .done(function(data) {
-          console.log(data);
-        })
-        .fail(function() {
+    myPlayers.forEach(function(player) {
+        $.ajax({
+                url: "https://api.fantasydata.net/v3/nfl/stats/JSON/Player/" + player.PlayerID + "?" + $.param(params),
+                beforeSend: function(xhrObj) {
+                    // Request headers
+                    xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", apikey);
+                },
+                type: "GET",
+                // Request body
+                data: "{body}",
+            })
+            .done(function(data) {
+                console.log(data);
+            })
+            .fail(function() {
 
-        });
-      });
+            });
+    });
 }
 
 
@@ -250,6 +267,7 @@ function setCurrentWeek() {
 }
 
 
+
 /*
  Defining the index controller prototype
 */
@@ -265,12 +283,13 @@ Register our little helper!
 */
 IndexController.prototype.registerServiceWorker = function() {
 
-    if (!('serviceWorker' in navigator)) {
-        alert("WARNING: your web browser doesn't fully support this app.  Try this app in chrome.", null, "dismiss");
-        return;
-    }
+    if ('serviceWorker' in navigator) {
+        //console.log('Service Worker is supported')
 
-    navigator.serviceWorker
+
+
+
+      navigator.serviceWorker
         .register('./service-worker.js', {
             scope: './'
         })
@@ -280,10 +299,8 @@ IndexController.prototype.registerServiceWorker = function() {
 
             if (reg.waiting) {
 
-                /*displayMessage("New update available!", "Refresh", "dismiss", function(worker){
-				worker.postMessage({ action: 'skipWaiting' });
-			}, reg.waiting);
-      */
+
+				      worker.postMessage({ action: 'skipWaiting' });
                 return;
             }
 
@@ -296,15 +313,28 @@ IndexController.prototype.registerServiceWorker = function() {
                 Controller.trackInstalling(reg.installing);
             });
 
+            reg.pushManager.subscribe({
+                userVisibleOnly: true
+            }).then(function(sub) {
+              navigator.serviceWorker.registration.showNotification("SOMETHING HAPPENED!", {
+                body: 'Are you free tonight?',
+                icon: 'images/joe.png',
+                vibrate: [200, 100, 200, 100, 200, 100, 400],
+                tag: 'request',
+                actions: [
+                  { action: 'yes', title: 'Yes!' },
+                  { action: 'no', title: 'No'}
+                ]
+              });
+                console.log('endpoint:', sub.endpoint);
+            });
+
         })
         .catch(function(err) {
             console.log('Service Worker Failed to Register', err);
         });
 
-        // ask the user if they'd like to receive push notifications
-        Notification.requestPermission(function(result) {
-          //console.log(result);
-        });
+
 
     /* useful tip on preventing chrome from refreshing endlessly when
     update on reload is checked (from Jake Archibalds' wittr)*/
@@ -314,6 +344,8 @@ IndexController.prototype.registerServiceWorker = function() {
         window.location.reload();
         refreshing = true;
     });
+
+  }
 
 
 };
@@ -328,6 +360,7 @@ IndexController.prototype.trackInstalling = function(worker) {
             /*displayMessage("New Update available!", "update now!", "dismiss", function(worker) {
 				worker.postMessage({ action: 'skipWaiting' });
 			}, worker);*/
+
         }
     });
 };
@@ -335,7 +368,7 @@ IndexController.prototype.trackInstalling = function(worker) {
 var Controller = new IndexController();
 
 $(document).ready(function() {
-    setCurrentWeek();
+    //setCurrentWeek();
 
     var db = openDatabase();
     db.then(function(db) {
@@ -353,8 +386,8 @@ $(document).ready(function() {
             /* no watched players to check...dont bother calling the api */
 
         } else {
-            getInjuries(response);
-            getWatchlistDetails(response);
+            //getInjuries(response);
+            //getWatchlistDetails(response);
         }
     });
 

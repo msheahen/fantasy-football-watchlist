@@ -15,7 +15,7 @@ addPlayerToWatchlist = function(id) {
                 Active: myPlayer.Active,
                 Injured: myPlayer.Injured,
                 PhotoUrl: myPlayer.PhotoUrl,
-                Price: myPlayer.UpcomingYahooSalary
+                UpcomingSalary: myPlayer.UpcomingSalary
             };
 
             /* save player data in db */
@@ -38,13 +38,13 @@ filterPlayersBy = function(param) {
       if(param == "ALL"){
         filteredPlayersList = allplayers;
       }else if (param == "FLEX"){
-        filteredPlayersList = allPlayers.filter(function(entry){
+        filteredPlayersList = allplayers.filter(function(entry){
                 return entry.Position === "RB" ||
                     entry.Position === "WR" ||
                     entry.Position === "TE";
               });
             }else{
-              filteredPlayersList = allPlayers.filter(function(entry){
+              filteredPlayersList = allplayers.filter(function(entry){
                 return entry.Position === param;
               });
             }
@@ -88,7 +88,7 @@ $(document).ready(function() {
     			return Promise.reject();
     		} else {
 
-          allPlayers = sortDscByKey(response, "Price");
+          setplayerList(sortDscByKey(response, "Price"));
           var theTemplateScript = $("#players-list").html();
           var theTemplate = Handlebars.compile(theTemplateScript);
           $("#playersList").append(theTemplate(sortDscByKey(response, "Price")));
@@ -123,6 +123,13 @@ $(document).ready(function() {
         });
         $("#flex").click(function() {
             filterPlayersBy("FLEX");
+        });
+
+        $("#namequery").keyup(function(e){
+          var filter = $(this).val();
+
+         // Loop through the comment list
+
         });
 
     }

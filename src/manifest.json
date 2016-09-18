@@ -1,5 +1,5 @@
 {
-  "short_name": "FFball Watchlist",
+  "short_name": "My Watchlist",
   "name": "Fantasy Football Watchlist",
   "icons": [
     {
@@ -43,4 +43,5 @@
   "start_url": "/index.html",
   "display": "standalone",
   "orientation": "portrait",
+  "gcm_sender_id": "673776022250"
 }

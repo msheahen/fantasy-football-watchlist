@@ -20,6 +20,7 @@
         </div>
     </header>
     <nav>
+
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link" href="/">My Watchlist</a>
@@ -28,7 +29,7 @@
                 <a class="nav-link active" href="#">Players</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="nfl-schedule.html">NFL Schedule</a>
+                <a class="nav-link" href="nfl-schedule.html">Schedule</a>
             </li>
         </ul>
     </nav>
@@ -36,23 +37,48 @@
     <script id="players-list" type="text/x-handlebars/template">
         {{#each this}}
         <li class='list-group-item'>
-            <img src="{{this.PhotoUrl}}" height="50px" ><span>{{this.Name}}</span> <span>{{this.Position}}    <b>{{this.Team}}</b></span>
-            <button class='btn btn-primary player-to-add' id="{{this.PlayerID}}">+</button>
+          <img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
+          <div class='playerContent'>
+            <span>{{this.Name}}</span>
+            <div><span>{{this.Position}}
+              <b>{{this.Team}}</b>
+            </span>
+            <span class='rankChange'></span></div>
+
+          </div>
+            <span class='currentSalary'>${{this.UpcomingSalary}}</span>
+          <button class='btn btn-primary player-to-add' id="{{this.PlayerID}}"><span class='sr-only'>Add {{this.Name}} to watchlist</span>+</button>
         </li>
         {{/each}}
     </script>
 
     <main>
         <nav>
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <button type="button" id='all' class="btn btn-secondary">All</button>
-                <button type="button" id='qb' class="btn btn-secondary">QB</button>
-                <button type="button" id='rb' class="btn btn-secondary">RB</button>
-                <button type="button" id='wr' class="btn btn-secondary">WR</button>
-                <button type="button" id='te' class="btn btn-secondary">TE</button>
-                <button type="button" id="k" class='btn btn-secondary'>K</button>
-                <button type="button" id='flex' class="btn btn-secondary">FLEX</button>
-            </div>
+          <form>
+          <div class="form-group">
+            <label for="usr">Player Search</label>
+            <input type="text" class="form-control" id="namequery">
+          </div>
+          <div class="form-group">
+              <fieldset class="positions">
+                  <legend class='sr-only'>Position </legend>
+                  <input type="radio" id="all" class='positionInput' name="rating" value="all" />
+                  <label for="all" title="All Positions">All</label>
+                  <input type="radio" id="qb" class='positionInput' name="rating" value="qb" />
+                  <label for="qb" title="Quarterback">QB</label>
+                  <input type="radio" id="rb" class='positionInput' name="rating" value="rb" />
+                  <label for="rb" title="Running Back">RB</label>
+                  <input type="radio" id="wr" class='positionInput' name="rating" value="wr" />
+                  <label for="wr" title="Wide Receiver">WR</label>
+                  <input type="radio" id="te" class='positionInput' name="rating" value="te"/>
+                  <label for="te" title="Tight End">TE</label>
+                  <input type="radio" id="k" class='positionInput' name="rating" value="k"/>
+                  <label for="k" title="Kicker">K</label>
+                  <input type="radio" id="flex" class='positionInput' name="rating" value="flex"/>
+                  <label for="flex" title="Flex">FLEX</label>
+              </fieldset>
+          </div>
+        </form>
         </nav>
         <ul class='list-group' id='playersList'>
         </ul>
