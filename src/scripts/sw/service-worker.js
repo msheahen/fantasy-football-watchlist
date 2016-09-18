@@ -30,6 +30,21 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('activate', function(event) {
+	self.registration.pushManager.subscribe({
+			userVisibleOnly: true
+	}).then(function(sub) {
+	/*  navigator.serviceWorker.registration.showNotification("SOMETHING HAPPENED!", {
+			body: 'Are you free tonight?',
+			icon: 'images/joe.png',
+			vibrate: [200, 100, 200, 100, 200, 100, 400],
+			tag: 'request',
+			actions: [
+				{ action: 'yes', title: 'Yes!' },
+				{ action: 'no', title: 'No'}
+			]
+		});*/
+			console.log('endpoint:', sub.endpoint);
+	});
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
@@ -46,6 +61,15 @@ self.addEventListener('activate', function(event) {
 
 
 self.addEventListener('fetch', function(event) {
+
+	if (requestUrl.origin === location.origin) {
+    if (requestUrl.pathname.startsWith('/photos/')) {
+      event.respondWith(servePhoto(event.request));
+      return;
+    }
+  }
+
+
 	event.respondWith(
 		caches.match(event.request).then(function(response) {
 			return response || fetch(event.request);
@@ -54,6 +78,20 @@ self.addEventListener('fetch', function(event) {
 
 });
 
+function servePhoto(request) {
+  var storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
+
+  return caches.open(contentImgsCache).then(function(cache) {
+    return cache.match(storageUrl).then(function(response) {
+      if (response) return response;
+
+      return fetch(request).then(function(networkResponse) {
+        cache.put(storageUrl, networkResponse.clone());
+        return networkResponse;
+      });
+    });
+  });
+}
 
 self.addEventListener('message', function(event) {
   if (event.data.action === 'skipWaiting') {

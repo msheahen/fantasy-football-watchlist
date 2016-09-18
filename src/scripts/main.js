@@ -235,7 +235,7 @@ function setCurrentWeek() {
                 We'll try and fetch the latest standings*/
                 if (currentweek == 'undefined' || currentweek != data) {
 
-
+                  
                     var db = openDatabase();
                     db.then(function(db) {
                         var tx = db.transaction('currentweek', 'readwrite');
@@ -313,21 +313,7 @@ IndexController.prototype.registerServiceWorker = function() {
                 Controller.trackInstalling(reg.installing);
             });
 
-            reg.pushManager.subscribe({
-                userVisibleOnly: true
-            }).then(function(sub) {
-              navigator.serviceWorker.registration.showNotification("SOMETHING HAPPENED!", {
-                body: 'Are you free tonight?',
-                icon: 'images/joe.png',
-                vibrate: [200, 100, 200, 100, 200, 100, 400],
-                tag: 'request',
-                actions: [
-                  { action: 'yes', title: 'Yes!' },
-                  { action: 'no', title: 'No'}
-                ]
-              });
-                console.log('endpoint:', sub.endpoint);
-            });
+
 
         })
         .catch(function(err) {
@@ -368,7 +354,7 @@ IndexController.prototype.trackInstalling = function(worker) {
 var Controller = new IndexController();
 
 $(document).ready(function() {
-    //setCurrentWeek();
+    setCurrentWeek();
 
     var db = openDatabase();
     db.then(function(db) {
