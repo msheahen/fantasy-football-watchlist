@@ -62,13 +62,15 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('fetch', function(event) {
 
+	/*
+
 	if (requestUrl.origin === location.origin) {
     if (requestUrl.pathname.startsWith('/photos/')) {
       event.respondWith(servePhoto(event.request));
       return;
     }
   }
-
+ */
 
 	event.respondWith(
 		caches.match(event.request).then(function(response) {

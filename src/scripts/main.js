@@ -2,6 +2,7 @@
 var path = window.location.pathname;
 var page = path.split("/").pop();
 var allplayers;
+var myplayers;
 var apikey = "9130e31adba74e27b4c44d17ac5f29e5";
 var currentweek = 0;
 
@@ -21,9 +22,70 @@ function sortDscByKey(array, key) {
     });
 }
 
+Handlebars.registerHelper("getIndex", function (index) {
+  return index + 1;
+});
+
 function setPlayerList(array) {
     allplayers = array;
 }
+
+function setMyPlayerList(array){
+  myplayers = array;
+}
+
+addPlayerToWatchlist = function(id) {
+
+            var player = allplayers.filter(function(entry) {
+                return entry.PlayerID === parseInt(id);
+            });
+
+            //console.log(player);
+            var myPlayer = player[0];
+
+            var data = {
+                PlayerID: myPlayer.PlayerID,
+                Name: myPlayer.Name,
+                Position: myPlayer.Position,
+                Team: myPlayer.Team,
+                Active: myPlayer.Active,
+                Injured: myPlayer.Injured,
+                PhotoUrl: myPlayer.PhotoUrl,
+                UpcomingSalary: myPlayer.UpcomingSalary
+            };
+
+            /* save player data in db */
+            var db = openDatabase();
+            db.then(function(db) {
+                var tx = db.transaction('myplayers', 'readwrite');
+                var store = tx.objectStore('myplayers');
+                store.put(data);
+                return tx.complete;
+            }).catch(function(error) {
+                console.log(error);
+            });
+
+};
+
+removePlayerFromWatchlist = function(id) {
+
+            /* save player data in db */
+            var db = openDatabase();
+            db.then(function(db) {
+                var tx = db.transaction('myplayers', 'readwrite');
+                var store = tx.objectStore('myplayers');
+                store.delete(parseInt(id));
+                return tx.complete;
+            }).catch(function(error) {
+                console.log(error);
+            }).then(function(response){
+            
+            });
+
+            $("#" + id).parent().remove();
+
+};
+
 
 function fetchPlayers() {
 
@@ -44,24 +106,24 @@ function fetchPlayers() {
         .done(function(data) {
             /* return only the offensive players */
             var players = data.filter(function(entry) {
-                return (entry.Position === "QB" || entry.Position === "RB" || entry.Position === "WR" || entry.Position === "K" || entry.Position === "TE") &&
+                return (entry.Position === "QB" || entry.Position === "RB" || entry.Position === "WR" || entry.Position === "TE") &&
+                    entry.FanDuelPlayerID !== null &&
                     entry.Active === true &&
-                    entry.UpcomingDraftKingsSalary !== null &&
-                    entry.DraftKingsPlayerID !== 592538 &&
-                    entry.DraftKingsPlayerID !== 262666 &&
-                    entry.DraftKingsPlayerID !== 744436 &&
-                    entry.DraftKingsPlayerID !== 598956 &&
-                    entry.DraftKingsPlayerID !== 749099 &&
-                    entry.DraftKingsPlayerID !== 690981;
+                    entry.FanDuelPlayerID !== 6828 &&
+                    entry.FanDuelPlayerID !== 41922 &&
+                    entry.FanDuelPlayerID !== 40857 &&
+                    entry.FanDuelPlayerID !== 72676;
             });
 
             allplayers = sortDscByKey(players, "UpcomingSalary");
 
             allplayers.forEach(function(thisplayer) {
-
-                thisplayer.PhotoUrl = "https://d327rxwuxd0q0c.cloudfront.net/nfl/players/" + thisplayer.DraftKingsPlayerID + ".png";
-                //thisplayer.PlayerID = thisplayer.DraftKingsPlayerID;
+                thisplayer.PhotoUrl = "https://d17odppiik753x.cloudfront.net/playerimages/nfl/" + thisplayer.FanDuelPlayerID + ".png";
+                if(thisplayer.UpcomingSalary === null){
+                  thisplayer.UpcomingSalary = 0;
+                }
             });
+
             var theTemplateScript = $("#players-list").html();
             var theTemplate = Handlebars.compile(theTemplateScript);
             $("#playersList").append(theTemplate(allplayers));
@@ -235,7 +297,7 @@ function setCurrentWeek() {
                 We'll try and fetch the latest standings*/
                 if (currentweek == 'undefined' || currentweek != data) {
 
-                  
+
                     var db = openDatabase();
                     db.then(function(db) {
                         var tx = db.transaction('currentweek', 'readwrite');

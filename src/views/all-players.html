@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 
 </head>
 
@@ -37,7 +38,7 @@
     <script id="players-list" type="text/x-handlebars/template">
         {{#each this}}
         <li class='list-group-item'>
-          <img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
+          <span class='rank'>{{getIndex @index}}</span><img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
           <div class='playerContent'>
             <span>{{this.Name}}</span>
             <div><span>{{this.Position}}
@@ -56,7 +57,7 @@
         <nav>
           <form>
           <div class="form-group">
-            <label for="usr">Player Search</label>
+            <label for="namequery">Player Search</label>
             <input type="text" class="form-control" id="namequery">
           </div>
           <div class="form-group">
@@ -72,8 +73,6 @@
                   <label for="wr" title="Wide Receiver">WR</label>
                   <input type="radio" id="te" class='positionInput' name="rating" value="te"/>
                   <label for="te" title="Tight End">TE</label>
-                  <input type="radio" id="k" class='positionInput' name="rating" value="k"/>
-                  <label for="k" title="Kicker">K</label>
                   <input type="radio" id="flex" class='positionInput' name="rating" value="flex"/>
                   <label for="flex" title="Flex">FLEX</label>
               </fieldset>

@@ -19,14 +19,18 @@ if(path == '/' || path == '/index.html'){
   }).then(function(response) {
 
 		if ( response.length === 0 ) {
-
+      $("#myPlayersList").html('<div class="alert"><strong>Warning</strong> You don\'t current have any watched players.  Navigate to the Players tab to start adding players.</div>');
 			return Promise.reject();
 		} else {
 
-      var players = response;
+      setMyPlayerList(sortDscByKey(response, "UpcomingSalary"));
       var theTemplateScript = $("#my-players-list").html();
       var theTemplate = Handlebars.compile(theTemplateScript);
       $("#myPlayersList").append(theTemplate(players));
+      $(".player-to-remove").on('click', function() {
+          console.log($(this).attr('id'));
+          removePlayerFromWatchlist($(this).attr('id'));
+      });
 
 		}
 
@@ -43,9 +47,6 @@ if(path == '/' || path == '/index.html'){
   $("#rb").click(function() {
       filterPlayersBy("RB");
   });
-  $("#k").click(function() {
-      filterPlayersBy("K");
-  });
   $("#wr").click(function() {
       filterPlayersBy("WR");
   });
@@ -54,6 +55,25 @@ if(path == '/' || path == '/index.html'){
   });
   $("#flex").click(function() {
       filterPlayersBy("FLEX");
+  });
+
+  $("#namequery").keyup(function(e){
+    var filterString = $(this).val();
+
+    filteredPlayersList = myplayers.filter(function(entry){
+            return entry.Name.toUpperCase().includes(filterString.toUpperCase());
+          });
+
+
+        var theTemplateScript = $("#my-players-list").html();
+        var theTemplate = Handlebars.compile(theTemplateScript);
+        $("#myPlayersList").html("");
+        $("#myPlayersList").append(theTemplate(filteredPlayersList));
+        $(".player-to-remove").on('click', function() {
+
+            removePlayerFromWatchlist($(this).attr('id'));
+        });
+
   });
 
 }
