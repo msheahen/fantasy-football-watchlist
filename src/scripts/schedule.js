@@ -24,31 +24,50 @@ if(path == '/nfl-schedule.html'){
           $("#week").val(thisweek[0].week.toString());
 
         }
+        fetch('./assets/data/schedule.json')
+          .then(function(response){
+            return response.json();
+          }).catch(function(error){
+            console.log(error);
+            return error;
+          }).then(function(response){
+
+            allgames = response.Schedule;
+            var games = allgames.filter(function(game){
+              return game.gameWeek === $("#week").val();
+            });
+            var theTemplateScript = $("#schedule-list").html();
+            var theTemplate = Handlebars.compile(theTemplateScript);
+            $("#scheduleList").append(theTemplate(games));
+          }).catch(function(error){
+            console.log(error);
+            return error;
+          });
       }).catch(function(err){
 
         $("#week").val("1");
+        fetch('./assets/data/schedule.json')
+          .then(function(response){
+            return response.json();
+          }).catch(function(error){
+            console.log(error);
+            return error;
+          }).then(function(response){
 
+            allgames = response.Schedule;
+            var games = allgames.filter(function(game){
+              return game.gameWeek === $("#week").val();
+            });
+            var theTemplateScript = $("#schedule-list").html();
+            var theTemplate = Handlebars.compile(theTemplateScript);
+            $("#scheduleList").append(theTemplate(games));
+          }).catch(function(error){
+            console.log(error);
+            return error;
+          });
       });
 
-      fetch('./assets/data/schedule.json')
-        .then(function(response){
-          return response.json();
-        }).catch(function(error){
-          console.log(error);
-          return error;
-        }).then(function(response){
 
-          allgames = response.Schedule;
-          var games = allgames.filter(function(game){
-            return game.gameWeek === $("#week").val();
-          });
-          var theTemplateScript = $("#schedule-list").html();
-          var theTemplate = Handlebars.compile(theTemplateScript);
-          $("#scheduleList").append(theTemplate(games));
-        }).catch(function(error){
-          console.log(error);
-          return error;
-        });
 
     $("#week").change(function(e){
 

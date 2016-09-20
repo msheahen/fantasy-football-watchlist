@@ -39,15 +39,15 @@
       <ul class='list-group' id='myPlayersList'>
       {{#each this}}
       <li class='list-group-item'>
-        <img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
-        <span class='playerContent'>
+        <span class='rank'>{{getIndex @index}}</span><img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
+        <div class='playerContent'>
           <span>{{this.Name}}</span>
-          <span>{{this.Position}}
+          <div><span>{{this.Position}}
             <b>{{this.Team}}</b>
           </span>
-          <span class='rankChange'></span>
+          <span class='rankChange'></span></div>
 
-        </span>
+        </div>
           <span class='currentSalary'>${{this.UpcomingSalary}}</span>
         <button class='btn btn-primary player-to-remove' id="{{this.PlayerID}}">-</button>
       </li>

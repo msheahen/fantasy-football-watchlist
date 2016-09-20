@@ -23,10 +23,12 @@ if(path == '/' || path == '/index.html'){
 			return Promise.reject();
 		} else {
 
+      //sort my players by price
       setMyPlayerList(sortDscByKey(response, "UpcomingSalary"));
+
       var theTemplateScript = $("#my-players-list").html();
       var theTemplate = Handlebars.compile(theTemplateScript);
-      $("#myPlayersList").append(theTemplate(players));
+      $("#myPlayersList").append(theTemplate(myplayers));
       $(".player-to-remove").on('click', function() {
           console.log($(this).attr('id'));
           removePlayerFromWatchlist($(this).attr('id'));

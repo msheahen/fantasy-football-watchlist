@@ -1,4 +1,4 @@
-var currentCacheName = 'fantasy-football-watchlist-v1';
+var currentCacheName = 'fantasy-football-watchlist-v2';
 var imageCache = 'fantasy-football-watchlist-images';
 
 var allCaches = [
@@ -29,22 +29,10 @@ self.addEventListener('install', function(event) {
 
 });
 
+
+//
 self.addEventListener('activate', function(event) {
-	self.registration.pushManager.subscribe({
-			userVisibleOnly: true
-	}).then(function(sub) {
-	/*  navigator.serviceWorker.registration.showNotification("SOMETHING HAPPENED!", {
-			body: 'Are you free tonight?',
-			icon: 'images/joe.png',
-			vibrate: [200, 100, 200, 100, 200, 100, 400],
-			tag: 'request',
-			actions: [
-				{ action: 'yes', title: 'Yes!' },
-				{ action: 'no', title: 'No'}
-			]
-		});*/
-			console.log('endpoint:', sub.endpoint);
-	});
+	
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
@@ -103,16 +91,12 @@ self.addEventListener('message', function(event) {
 
 
 self.addEventListener('push', function(event) {
-  console.log('Push message received', event);
-	self.registration.showNotification("SOMETHING HAPPENED!", {
-    body: 'Are you free tonight?',
-    icon: 'images/joe.png',
+  //console.log('Push message received', event);
+	self.registration.showNotification("ALERT", {
+    body: 'One of your players did something!',
+    icon: 'assets/images/football-launcher-96.png',
     vibrate: [200, 100, 200, 100, 200, 100, 400],
-    tag: 'request',
-    actions: [
-      { action: 'yes', title: 'Yes!' },
-      { action: 'no', title: 'No'}
-    ]
+    tag: 'request'
   });
   // TODO
 });

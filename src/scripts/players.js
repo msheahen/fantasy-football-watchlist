@@ -56,8 +56,11 @@ $(document).ready(function() {
           setplayerList(sortDscByKey(response, "Price"));
           var theTemplateScript = $("#players-list").html();
           var theTemplate = Handlebars.compile(theTemplateScript);
-          $("#playersList").append(theTemplate(sortDscByKey(response, "Price")));
 
+          $("#playersList").append(theTemplate(sortDscByKey(response, "Price")));
+          $("#load").css({
+            "display": "none"
+          });
           $(".player-to-add").on('click', function() {
               addPlayerToWatchlist($(this).attr('id'));
           });

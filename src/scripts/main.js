@@ -31,7 +31,7 @@ function setPlayerList(array) {
 }
 
 function setMyPlayerList(array){
-  myplayers = array;
+    myplayers = array;
 }
 
 addPlayerToWatchlist = function(id) {
@@ -79,7 +79,7 @@ removePlayerFromWatchlist = function(id) {
             }).catch(function(error) {
                 console.log(error);
             }).then(function(response){
-            
+
             });
 
             $("#" + id).parent().remove();
@@ -348,21 +348,31 @@ IndexController.prototype.registerServiceWorker = function() {
     if ('serviceWorker' in navigator) {
         //console.log('Service Worker is supported')
 
-
-
-
       navigator.serviceWorker
         .register('./service-worker.js', {
             scope: './'
         })
         .then(function(reg) {
 
+            reg.pushManager.subscribe({
+              userVisibleOnly: true
+            }).then(function(sub) {
 
+                alert(sub.endpoint);
+                  firebase.database().ref('endpoints/myend').set({
+                    endpoint: sub.endpoint
+                  });
+                  // Get a key for a new Post.
+                  //var newPostKey = firebase.database().ref().child('posts').push().key;
+
+              console.log('endpoint:', sub.endpoint);
+            }).catch(function(err){
+              console.log("could not subscribe");
+            });
 
             if (reg.waiting) {
 
-
-				      worker.postMessage({ action: 'skipWaiting' });
+				      navigator.serviceWorker.postMessage({ action: 'skipWaiting' });
                 return;
             }
 
@@ -408,12 +418,20 @@ IndexController.prototype.trackInstalling = function(worker) {
             /*displayMessage("New Update available!", "update now!", "dismiss", function(worker) {
 				worker.postMessage({ action: 'skipWaiting' });
 			}, worker);*/
+      self.registration.showNotification("UPDATE AVAILABLE", {
+        body: 'Do you want to update to the newest version?',
+        icon: 'assets/images/football-launcher-96.png',
+        vibrate: [200, 100, 200, 100, 200, 100, 400],
+        tag: 'request',
+
+      });
 
         }
     });
 };
 
 var Controller = new IndexController();
+
 
 $(document).ready(function() {
     setCurrentWeek();
