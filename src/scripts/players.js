@@ -93,7 +93,7 @@ $(document).ready(function() {
         $("#namequery").keyup(function(e){
           var filterString = $(this).val();
 
-          console.log(filterString);
+          //console.log(filterString);
           filteredPlayersList = allplayers.filter(function(entry){
                   return entry.Name.toUpperCase().includes(filterString.toUpperCase());
                 });

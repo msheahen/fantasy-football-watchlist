@@ -32,7 +32,7 @@ self.addEventListener('install', function(event) {
 
 //
 self.addEventListener('activate', function(event) {
-	
+
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
@@ -91,9 +91,10 @@ self.addEventListener('message', function(event) {
 
 
 self.addEventListener('push', function(event) {
+	console.log(event);
   //console.log('Push message received', event);
 	self.registration.showNotification("ALERT", {
-    body: 'One of your players did something!',
+    body: event.data,
     icon: 'assets/images/football-launcher-96.png',
     vibrate: [200, 100, 200, 100, 200, 100, 400],
     tag: 'request'

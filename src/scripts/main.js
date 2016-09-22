@@ -3,6 +3,7 @@ var path = window.location.pathname;
 var page = path.split("/").pop();
 var allplayers;
 var myplayers;
+var username = 'mary';
 var apikey = "9130e31adba74e27b4c44d17ac5f29e5";
 var currentweek = 0;
 
@@ -42,6 +43,16 @@ addPlayerToWatchlist = function(id) {
 
             //console.log(player);
             var myPlayer = player[0];
+            //var newMessageRef = messageListRef.push();
+            if(myPlayer.Injured === undefined){
+              myPlayer.Injured = false;
+            }
+            //messageListRef.push({ 'user_id': 'fred', 'text': 'Yabba Dabba Doo!' });
+            firebase.database().ref(username + '/players/' + myPlayer.PlayerID).set({
+              player : myPlayer.Name,
+              salary : myPlayer.UpcomingSalary,
+              injured : myPlayer.Injured
+            });
 
             var data = {
                 PlayerID: myPlayer.PlayerID,
@@ -60,6 +71,7 @@ addPlayerToWatchlist = function(id) {
                 var tx = db.transaction('myplayers', 'readwrite');
                 var store = tx.objectStore('myplayers');
                 store.put(data);
+
                 return tx.complete;
             }).catch(function(error) {
                 console.log(error);
@@ -358,14 +370,14 @@ IndexController.prototype.registerServiceWorker = function() {
               userVisibleOnly: true
             }).then(function(sub) {
 
-                alert(sub.endpoint);
-                  firebase.database().ref('endpoints/myend').set({
-                    endpoint: sub.endpoint
-                  });
+
+
+                  firebase.database().ref(username + '/endpoints').update({
+                    endpoint: sub.endpoint});
                   // Get a key for a new Post.
                   //var newPostKey = firebase.database().ref().child('posts').push().key;
 
-              console.log('endpoint:', sub.endpoint);
+              //console.log('endpoint:', sub.endpoint);
             }).catch(function(err){
               console.log("could not subscribe");
             });
@@ -450,6 +462,8 @@ $(document).ready(function() {
     }).catch(function(err) {}).then(function(response) {
         if (response.length === 0) {
             /* no watched players to check...dont bother calling the api */
+
+
 
         } else {
             //getInjuries(response);
