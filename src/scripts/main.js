@@ -371,13 +371,17 @@ IndexController.prototype.registerServiceWorker = function() {
             }).then(function(sub) {
 
 
+                  //subscription = JSON.stringify(sub);
 
                   firebase.database().ref(username + '/endpoints').update({
-                    endpoint: sub.endpoint});
+                    subscription: JSON.stringify(sub)
+                  });
                   // Get a key for a new Post.
                   //var newPostKey = firebase.database().ref().child('posts').push().key;
 
               //console.log('endpoint:', sub.endpoint);
+              //onsole.log(subscription.keys);
+
             }).catch(function(err){
               console.log("could not subscribe");
             });
@@ -462,8 +466,6 @@ $(document).ready(function() {
     }).catch(function(err) {}).then(function(response) {
         if (response.length === 0) {
             /* no watched players to check...dont bother calling the api */
-
-
 
         } else {
             //getInjuries(response);

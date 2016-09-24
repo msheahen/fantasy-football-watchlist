@@ -91,10 +91,13 @@ self.addEventListener('message', function(event) {
 
 
 self.addEventListener('push', function(event) {
-	console.log(event);
+
+
+	var jsonobj = event.data.text();
+
   //console.log('Push message received', event);
 	self.registration.showNotification("ALERT", {
-    body: event.data,
+    body: jsonobj,
     icon: 'assets/images/football-launcher-96.png',
     vibrate: [200, 100, 200, 100, 200, 100, 400],
     tag: 'request'
