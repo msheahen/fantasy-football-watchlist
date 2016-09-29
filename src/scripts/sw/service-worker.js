@@ -95,7 +95,6 @@ self.addEventListener('push', function(event) {
 
 	var jsonobj = event.data.text();
 
-  //console.log('Push message received', event);
 	self.registration.showNotification("ALERT", {
     body: jsonobj,
     icon: 'assets/images/football-launcher-96.png',

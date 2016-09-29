@@ -58,7 +58,10 @@
       <ul class='list-group'>
         {{#each this}}
         <li class='list-group-item'>
-            <div class='vs-container text-center'><span class='away-team'>{{this.awayTeam}}</span> @ <span class='home-team'>{{this.homeTeam}}</span></div> <div class='game-time text-center'>{{gameDate}} {{gameTimeET}}ET</div>
+            <div class='vs-container text-center'>
+              <img class='teamLogo away' src='assets/images/teams/{{this.awayTeam}}.gif' aria-hidden="true">
+              <span class='away-team'><span aria-hidden="true">{{this.awayTeam}}</span><span class='sr-only'>{{this.awayTeamName}}</span></span> @ <span class='home-team'><span class='sr-only'>{{this.homeTeamName}}</span><span aria-hidden='true'>{{this.homeTeam}}</span></span>
+              <img class='teamLogo home' src='assets/images/teams/{{this.homeTeam}}.gif' aria-hidden="true"></div> <div class='game-time text-center'>{{gameDate}} {{gameTimeET}} ET</div>
         </li>
         {{/each}}
       </ul>
@@ -66,8 +69,8 @@
 
     <main>
 
-        <div id='scheduleList'>
-        </div>
+        <section id='scheduleList'>
+        </section>
 
     </main>
 

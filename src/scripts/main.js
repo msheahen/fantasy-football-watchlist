@@ -3,7 +3,7 @@ var path = window.location.pathname;
 var page = path.split("/").pop();
 var allplayers;
 var myplayers;
-var username = 'mary';
+var username = null;
 var apikey = "9130e31adba74e27b4c44d17ac5f29e5";
 var currentweek = 0;
 
@@ -21,6 +21,31 @@ function sortDscByKey(array, key) {
         var y = b[key];
         return ((x > y) ? -1 : ((x < y) ? 1 : 0));
     });
+}
+
+function checkLoggedIn(){
+  var db = openDatabase();
+
+  db.then(function(db) {
+
+      if (!db) {
+          console.log('No database!');
+          return;
+      }
+
+      var tx = db.transaction('username', 'readwrite');
+      var store = tx.objectStore('username');
+
+      return store.getAll();
+  }).catch(function(err) {}).then(function(response) {
+
+      if (response === undefined || response.length === 0) {
+          $('#login-modal').modal("show");
+
+      } else {
+          return;
+      }
+  });
 }
 
 Handlebars.registerHelper("getIndex", function (index) {
@@ -139,6 +164,9 @@ function fetchPlayers() {
             var theTemplateScript = $("#players-list").html();
             var theTemplate = Handlebars.compile(theTemplateScript);
             $("#playersList").append(theTemplate(allplayers));
+            $("#load").css({
+              "display": "none"
+            });
 
             $(".player-to-add").on('click', function() {
                 addPlayerToWatchlist($(this).attr('id'));
@@ -450,15 +478,21 @@ var Controller = new IndexController();
 
 
 $(document).ready(function() {
+    $('#login-modal').modal({ show: false});
+
+    checkLoggedIn();
+
     setCurrentWeek();
 
     var db = openDatabase();
+
     db.then(function(db) {
 
         if (!db) {
             console.log('No database!');
             return;
         }
+
         var tx = db.transaction('myplayers', 'readwrite');
         var store = tx.objectStore('myplayers');
 

@@ -14,6 +14,23 @@
 </head>
 
 <body>
+  
+  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    	  <div class="modal-dialog">
+				<div class="loginmodal-container">
+					<h1>Login to Your Account</h1><br>
+				  <form>
+					<input type="text" name="user" placeholder="Username">
+					<input type="password" name="pass" placeholder="Password">
+					<input type="submit" name="login" class="login loginmodal-submit" value="Login">
+				  </form>
+
+				  <div class="login-help">
+					<a href="#">Register</a> - <a href="#">Forgot Password</a>
+				  </div>
+				</div>
+			</div>
+		</div>
 
     <header class="jumbotron">
         <div class='container-fluid'>
@@ -39,17 +56,17 @@
       <ul class='list-group' id='myPlayersList'>
       {{#each this}}
       <li class='list-group-item'>
-        <span class='rank'>{{getIndex @index}}</span><img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
+        <span class='rank'><span class='sr-only'>Rank: </span>{{getIndex @index}}</span><img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
         <div class='playerContent'>
-          <span>{{this.Name}}</span>
-          <div><span>{{this.Position}}
-            <b>{{this.Team}}</b>
+          <span><span class='sr-only'>player name: </span>{{this.Name}}</span>
+          <div><span><span class='sr-only'>position: </span>{{this.Position}}
+            <b><span class='sr-only'>team: </span>{{this.Team}}</b>
           </span>
           <span class='rankChange'></span></div>
 
         </div>
-          <span class='currentSalary'>${{this.UpcomingSalary}}</span>
-        <button class='btn btn-primary player-to-remove' id="{{this.PlayerID}}">-</button>
+          <span class='currentSalary'><span class='sr-only'>Current Salary</span>${{this.UpcomingSalary}}</span>
+        <button class='btn btn-primary player-to-remove' id="{{this.PlayerID}}"><span class='sr-only'>Remove {{this.Name}} from watchlist</span>-</button>
       </li>
       {{/each}}
       </ul>
@@ -96,6 +113,7 @@
         messagingSenderId: "673776022250"
       };
       firebase.initializeApp(config);
+
     </script>
     <script src="assets/js/vendor.js"></script>
     <script src="assets/js/app.js"></script>

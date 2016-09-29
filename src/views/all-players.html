@@ -38,16 +38,16 @@
     <script id="players-list" type="text/x-handlebars/template">
         {{#each this}}
         <li class='list-group-item'>
-          <span class='rank'>{{getIndex @index}}</span><img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
+          <span class='rank'><span class='sr-only'>rank: </span>{{getIndex @index}}</span><img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
           <div class='playerContent'>
-            <span class='playerName'>{{this.Name}}</span>
-            <div class='playerInfo'><span>{{this.Position}}
-              <b>{{this.Team}}</b>
+            <span class='playerName'><span class='sr-only'>player name: </span>{{this.Name}}</span>
+            <div class='playerInfo'><span><span class='sr-only'>position: </span>{{this.Position}}
+              <b><span class='sr-only'>Team: </span>{{this.Team}}</b>
             </span>
             <span class='rankChange'></span></div>
 
           </div>
-            <span class='currentSalary'>${{this.UpcomingSalary}}</span>
+            <span class='currentSalary'><span class='sr-only'>current salary: </span>${{this.UpcomingSalary}}</span>
           <button class='btn btn-primary player-to-add' id="{{this.PlayerID}}"><span class='sr-only'>Add {{this.Name}} to watchlist</span>+</button>
         </li>
         {{/each}}
@@ -79,7 +79,9 @@
           </div>
         </form>
         </nav>
-        <ul class='list-group' id='playersList'>
+        <section>
+          <ul class='list-group' id='playersList'>
+        </section>
 
         </ul>
         <div id="load">

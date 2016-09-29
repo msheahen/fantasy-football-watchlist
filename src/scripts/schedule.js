@@ -1,8 +1,16 @@
 var allgames;
+var allTeams;
 
 $(document).ready(function(){
 
 if(path == '/nfl-schedule.html'){
+
+  fetch('./assets/data/teams.json')
+    .then(function(response){
+      return response.json();
+    }).then(function(teams){
+      allTeams = teams.NFLteams;
+    })
 
   var db = openDatabase();
 
@@ -19,11 +27,14 @@ if(path == '/nfl-schedule.html'){
       }).then(function(thisweek){
         if(thisweek.length === 0 || thisweek === 'undefined'){
             $("#week").val("1");
+
+
         }else{
 
           $("#week").val(thisweek[0].week.toString());
 
         }
+
         fetch('./assets/data/schedule.json')
           .then(function(response){
             return response.json();
@@ -33,6 +44,7 @@ if(path == '/nfl-schedule.html'){
           }).then(function(response){
 
             allgames = response.Schedule;
+
             var games = allgames.filter(function(game){
               return game.gameWeek === $("#week").val();
             });
@@ -58,6 +70,7 @@ if(path == '/nfl-schedule.html'){
             var games = allgames.filter(function(game){
               return game.gameWeek === $("#week").val();
             });
+
             var theTemplateScript = $("#schedule-list").html();
             var theTemplate = Handlebars.compile(theTemplateScript);
             $("#scheduleList").append(theTemplate(games));
