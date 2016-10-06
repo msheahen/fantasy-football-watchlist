@@ -38,6 +38,12 @@ The project should now be running on localhost:3000
 
 The server code should now be running on localhost:3030
 
+## See the notifications in action!
+1. Open the web app on port 3000, and add a player to your watchlist by clicking the "+" button to add them
+2. If you are using chrome, you should see a notification that their salary has changed.  This is an example of how the notifications could be used.
+
+Enjoy!
+
 # Technologies Used
 
 1. Node.js

@@ -30,7 +30,6 @@ if(path == '/' || path == '/index.html'){
       var theTemplate = Handlebars.compile(theTemplateScript);
       $("#myPlayersList").append(theTemplate(myplayers));
       $(".player-to-remove").on('click', function() {
-          console.log($(this).attr('id'));
           removePlayerFromWatchlist($(this).attr('id'));
       });
 

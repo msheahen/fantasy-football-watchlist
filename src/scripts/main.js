@@ -35,6 +35,9 @@ function setMyPlayerList(array) {
     myplayers = array;
 }
 
+/************************************
+function to add a player to our Watchlist
+************************************/
 addPlayerToWatchlist = function(id) {
 
     var player = allplayers.filter(function(entry) {
@@ -78,28 +81,61 @@ addPlayerToWatchlist = function(id) {
 
 };
 
+/****************************************
+function to remove player from our Watchlist
+*****************************************/
 removePlayerFromWatchlist = function(id) {
 
-    /* save player data in db */
     var db = openDatabase();
     db.then(function(db) {
+        firebase.database().ref('mary/players/' + id).remove();
         var tx = db.transaction('myplayers', 'readwrite');
         var store = tx.objectStore('myplayers');
         store.delete(parseInt(id));
         return tx.complete;
     }).catch(function(error) {
         console.log(error);
-    }).then(function(response) {
-        firebase.database().ref('mary/players/' + myPlayer.PlayerID).remove();
     });
 
     $("#" + id).parent().remove();
 
 };
 
+/*************************************
+Function to filter players using the buttons at the top
+*************************************/
+filterPlayersBy = function(param) {
+
+    var filteredPlayersList;
+      if(param == "ALL"){
+        filteredPlayersList = allplayers;
+      }else if (param == "FLEX"){
+        filteredPlayersList = allplayers.filter(function(entry){
+                return entry.Position === "RB" ||
+                    entry.Position === "WR" ||
+                    entry.Position === "TE";
+              });
+            }else{
+              filteredPlayersList = allplayers.filter(function(entry){
+                return entry.Position === param;
+              });
+            }
+
+            var theTemplateScript = $("#players-list").html();
+            var theTemplate = Handlebars.compile(theTemplateScript);
+            $("#playersList").html("");
+            $("#playersList").append(theTemplate(filteredPlayersList));
+            $(".player-to-add").on('click', function() {
+                addPlayerToWatchlist($(this).attr('id'));
+            });
+
+};
 
 
-/* Function to get all the current active players from the fantasydata API */
+
+/**********************************************************************
+ Function to get all the current active players from the fantasydata API
+ *********************************************************************/
 function fetchPlayers() {
 
     var params = {
@@ -147,7 +183,6 @@ function fetchPlayers() {
             $(".player-to-add").on('click', function() {
                 addPlayerToWatchlist($(this).attr('id'));
             });
-            //console.log(players);
 
             var playerData = [];
             allplayers.forEach(function(myPlayer) {
@@ -159,7 +194,7 @@ function fetchPlayers() {
                     Active: myPlayer.Active,
                     Injured: myPlayer.Injured,
                     PhotoUrl: myPlayer.PhotoUrl,
-                    Price: myPlayer.UpcomingSalary,
+                    UpcomingSalary: myPlayer.UpcomingSalary,
                 });
             });
 
@@ -185,7 +220,9 @@ function fetchPlayers() {
 }
 
 
-
+/**********************************
+function to open database in idb
+************************************/
 function openDatabase() {
     if (!navigator.serviceWorker) {
         /*  displayMessage("WARNING: your web browser doesn't fully support this app", null, "dismiss");*/
@@ -205,7 +242,9 @@ function openDatabase() {
     });
 }
 
-/* This is how we find the current week of the 2016 season.*/
+/*******************************
+ This is how we find the current week of the 2016 season.
+ *********************************/
 function setCurrentWeek() {
 
     var db = openDatabase();
@@ -276,9 +315,10 @@ function setCurrentWeek() {
 
 
 
-/*
+/********************************
  Defining the index controller prototype
-*/
+************************************/
+
 function IndexController() {
 
     this.db = openDatabase();
@@ -301,11 +341,9 @@ IndexController.prototype.registerServiceWorker = function() {
             .then(function(reg) {
 
                 if (reg.waiting) {
-
                     navigator.serviceWorker.postMessage({
                         action: 'skipWaiting'
                     });
-
                     return;
                 }
 
@@ -365,13 +403,7 @@ IndexController.prototype.trackInstalling = function(worker) {
     worker.addEventListener('statechange', function() {
         if (worker.state == 'installed') {
 
-            self.registration.showNotification("UPDATE AVAILABLE", {
-                body: 'Do you want to update to the newest version?',
-                icon: 'assets/images/football-launcher-96.png',
-                vibrate: [200, 100, 200, 100, 200, 100, 400],
-                tag: 'request',
-
-            });
+            console.log('update available!');
 
         }
     });

@@ -1,3 +1,6 @@
+/*************************************
+Function to filter players using the buttons at the top
+*************************************/
 filterPlayersBy = function(param) {
 
     var filteredPlayersList;
@@ -24,6 +27,8 @@ filterPlayersBy = function(param) {
             });
 
 };
+
+
 
 $(document).ready(function() {
 
@@ -53,11 +58,13 @@ $(document).ready(function() {
     			return Promise.reject();
     		} else {
 
-          setplayerList(sortDscByKey(response, "Price"));
           var theTemplateScript = $("#players-list").html();
           var theTemplate = Handlebars.compile(theTemplateScript);
+          var thePlayers = sortDscByKey(response, "UpcomingSalary");
 
-          $("#playersList").append(theTemplate(sortDscByKey(response, "Price")));
+          $("#playersList").append(theTemplate(sortDscByKey(response, "UpcomingSalary")));
+          setPlayerList(thePlayers);
+
           $("#load").css({
             "display": "none"
           });
