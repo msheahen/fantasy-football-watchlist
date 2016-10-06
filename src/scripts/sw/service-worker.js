@@ -12,7 +12,7 @@ self.addEventListener('install', function(event) {
 		'./',
 		'./index.html',
     './all-players.html',
-    './schedule.html',
+    './nfl-schedule.html',
     './assets/js/vendor.js',
     './assets/js/app.js',
     './assets/css/bootstrap.min.css',
