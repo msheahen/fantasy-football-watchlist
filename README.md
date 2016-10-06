@@ -44,6 +44,9 @@ The server code should now be running on localhost:3030
 
 Enjoy!
 
+## Offline Functionality
+For this app, the nfl schedule is fully visible offline.  The watchlist and players pages are visible offline if the user has previously loaded those pages on that particular browser before.
+
 # Technologies Used
 
 1. Node.js
