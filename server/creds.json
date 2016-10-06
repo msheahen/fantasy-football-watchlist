@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "fantasy-football-watchlist",
+  "private_key_id": "179adfc680a23f35ecfe4f8d7848bbf4d2474658",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEwAIBADANBgkqhkiG9w0BAQEFAASCBKowggSmAgEAAoIBAQC5wColZgDUrddM\n/n9WRfLfgOspukgkC6sxRLzA6aLcLQ3/kXfHz7Cag6xCERHpwg97jFehl/cvS6oE\n4spB1G+IpIGNw92LnNHjCxdUx0oqc8LkH1C3KDvVtud9sxA9TvdK/zk3/OhQWEbc\n82XxionZ5tmoDK2ndPhXgQhFsPZf/TmCrNkW/u/VOAbhwFmVwgI90lHGRmHkCZPE\nvl7yS+4jRiZN8+3KS9XfMFYfbq3y7/FSyc5UPcm2r28vVj7qGzwm7YxBZlO5jioZ\n68ZD8qC7jrWkqqQDBX6hu93iFZMvNyDENtHo8zMRQWvM/eqUIe5WWljP7NHlkUYQ\nqJ49JcXrAgMBAAECggEBAIlbqA71yiF72B1wiRt0KHDMtZmqzhQRqOuLCAWj/7HP\ng2181dWlKNRqEGTemJ+CyM407sxpQvnveu+YAbcCb+PcuozpzRejxLWfiwY/RQH1\njqYA3kBC+VRFqBOU6apcjZQg/eAAHo7jaKuVNcqTBvNiuYuCrJuLbOXQXhyjCt3Z\nchjOoVohE2QqX9Zpcn2VGobyEtfD9ltQH+XkS5YPBv/yIdRGtJm1Swf9CqdXMej8\nJev1u/EyucXhcURUMP3++lPBvVGCk5Rs25WhprILK7Ki7D+ksfV2mnS1QfrM6cBA\nvc7hT6LOrgnKEizw7MnOxRiH31cJMhzQifSwGnM6ibECgYEA4LBIKR3M6dpn/9ez\nSLbLTEJyYxIzXZQNuq5HGUr54+WfVWbMmSwhX+mNigdonQiAcCvG9E625vv4Vokd\nI0akmpHPvFumnuydqfl9iXrWa2HcHIi8CBpYvQHAqnwOau92WI21VxChJM587On9\nU9oHYzJwu3QucwHjmazHC17bnrMCgYEA06LHhReisEGIy2mylaNdYO4Y0R4efVHb\nQod98k0RWKx7BWA+fTinqOwkon+UjTr4bfizy8qNBiDwTxiUM29GDX4K7AJLnsSJ\nxMotvOPkfxqfbHRDqwKn6FUi//gPV41HqtbvswRn1fVu1Nt+2YN1tRSvAeHvNJqW\nhEOVmLQe1+kCgYEAzaktc80eKhNKzEhQh0ch0HylnP8k2wvQgUZSN9mD39DnRdFh\nhvZ42gS6FFRxsgL9JS883ZRLICQUjIjWjdp0gjLi9aLiYWdtbQ67lKJGL2YUhl21\n1qje/qnjA2mn/MORDL8w9C95gGosuOH4ic7woiCiRUKz3XsmLByU2FiMJ7cCgYEA\nyEMtZ7yw3vZ0en9/VOfska9cXm2QzmdqAm9x95mDw5QbKUAkgZvd0xP5qqbtLCNU\nN8PyZvI5NkZu/3mzq2QtNtFBhoi5g/hYoZXrZ+WCL+BCYX83FRiDSG9fmjXiVqfC\n3F9dHNobY7RGdzdotm0WMg7rd+2SzAVITsohQgmXchkCgYEArfU5DTVTCkRKFhbz\ndJwT/BduoAwFx1Z039gQhGo3Rk4M2tTDg9VtHSBx541TGMMSbThhCxbcBxo8H6oQ\n7OM1buVuQCgAuCM/8kDSTCaYwfkQDsMrx+eajmmGQr8obn/yV+D1z9whcCx/TgWT\niSPbq4MFmS8IZu/jggFtt9AMt9s=\n-----END PRIVATE KEY-----\n",
+  "client_email": "notifications-pusher@fantasy-football-watchlist.iam.gserviceaccount.com",
+  "client_id": "112483058614884042131",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/notifications-pusher%40fantasy-football-watchlist.iam.gserviceaccount.com"
+}

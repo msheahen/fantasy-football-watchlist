@@ -1,0 +1,18 @@
+{
+  "name": "fantasy-football-server",
+  "version": "1.0.0",
+  "description": "server for pushing notifications to gcm endpoints via firebase",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "firebase": "^3.4.0",
+    "lodash": "^4.16.0",
+    "web-push": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mary Sheahen",
+  "license": "ISC"
+}

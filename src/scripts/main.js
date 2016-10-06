@@ -23,107 +23,83 @@ function sortDscByKey(array, key) {
     });
 }
 
-function checkLoggedIn(){
-  var db = openDatabase();
-
-  db.then(function(db) {
-
-      if (!db) {
-          console.log('No database!');
-          return;
-      }
-
-      var tx = db.transaction('username', 'readwrite');
-      var store = tx.objectStore('username');
-
-      return store.getAll();
-  }).catch(function(err) {}).then(function(response) {
-
-      if (response === undefined || response.length === 0) {
-          $('#login-modal').modal("show");
-
-      } else {
-          return;
-      }
-  });
-}
-
-Handlebars.registerHelper("getIndex", function (index) {
-  return index + 1;
+Handlebars.registerHelper("getIndex", function(index) {
+    return index + 1;
 });
 
 function setPlayerList(array) {
     allplayers = array;
 }
 
-function setMyPlayerList(array){
+function setMyPlayerList(array) {
     myplayers = array;
 }
 
 addPlayerToWatchlist = function(id) {
 
-            var player = allplayers.filter(function(entry) {
-                return entry.PlayerID === parseInt(id);
-            });
+    var player = allplayers.filter(function(entry) {
+        return entry.PlayerID === parseInt(id);
+    });
 
-            //console.log(player);
-            var myPlayer = player[0];
-            //var newMessageRef = messageListRef.push();
-            if(myPlayer.Injured === undefined){
-              myPlayer.Injured = false;
-            }
-            //messageListRef.push({ 'user_id': 'fred', 'text': 'Yabba Dabba Doo!' });
-            firebase.database().ref(username + '/players/' + myPlayer.PlayerID).set({
-              player : myPlayer.Name,
-              salary : myPlayer.UpcomingSalary,
-              injured : myPlayer.Injured
-            });
+    var myPlayer = player[0];
 
-            var data = {
-                PlayerID: myPlayer.PlayerID,
-                Name: myPlayer.Name,
-                Position: myPlayer.Position,
-                Team: myPlayer.Team,
-                Active: myPlayer.Active,
-                Injured: myPlayer.Injured,
-                PhotoUrl: myPlayer.PhotoUrl,
-                UpcomingSalary: myPlayer.UpcomingSalary
-            };
+    if (myPlayer.Injured === undefined) {
+        myPlayer.Injured = false;
+    }
 
-            /* save player data in db */
-            var db = openDatabase();
-            db.then(function(db) {
-                var tx = db.transaction('myplayers', 'readwrite');
-                var store = tx.objectStore('myplayers');
-                store.put(data);
+    firebase.database().ref('mary/players/' + myPlayer.PlayerID).set({
+        player: myPlayer.Name,
+        salary: myPlayer.UpcomingSalary,
+        injured: myPlayer.Injured
+    });
 
-                return tx.complete;
-            }).catch(function(error) {
-                console.log(error);
-            });
+    var data = {
+        PlayerID: myPlayer.PlayerID,
+        Name: myPlayer.Name,
+        Position: myPlayer.Position,
+        Team: myPlayer.Team,
+        Active: myPlayer.Active,
+        Injured: myPlayer.Injured,
+        PhotoUrl: myPlayer.PhotoUrl,
+        UpcomingSalary: myPlayer.UpcomingSalary
+    };
+
+    /* save player data in db */
+    var db = openDatabase();
+    db.then(function(db) {
+        var tx = db.transaction('myplayers', 'readwrite');
+        var store = tx.objectStore('myplayers');
+        store.put(data);
+
+        return tx.complete;
+    }).catch(function(error) {
+        console.log(error);
+    });
 
 };
 
 removePlayerFromWatchlist = function(id) {
 
-            /* save player data in db */
-            var db = openDatabase();
-            db.then(function(db) {
-                var tx = db.transaction('myplayers', 'readwrite');
-                var store = tx.objectStore('myplayers');
-                store.delete(parseInt(id));
-                return tx.complete;
-            }).catch(function(error) {
-                console.log(error);
-            }).then(function(response){
+    /* save player data in db */
+    var db = openDatabase();
+    db.then(function(db) {
+        var tx = db.transaction('myplayers', 'readwrite');
+        var store = tx.objectStore('myplayers');
+        store.delete(parseInt(id));
+        return tx.complete;
+    }).catch(function(error) {
+        console.log(error);
+    }).then(function(response) {
+        firebase.database().ref('mary/players/' + myPlayer.PlayerID).remove();
+    });
 
-            });
-
-            $("#" + id).parent().remove();
+    $("#" + id).parent().remove();
 
 };
 
 
+
+/* Function to get all the current active players from the fantasydata API */
 function fetchPlayers() {
 
     var params = {
@@ -156,8 +132,8 @@ function fetchPlayers() {
 
             allplayers.forEach(function(thisplayer) {
                 thisplayer.PhotoUrl = "https://d17odppiik753x.cloudfront.net/playerimages/nfl/" + thisplayer.FanDuelPlayerID + ".png";
-                if(thisplayer.UpcomingSalary === null){
-                  thisplayer.UpcomingSalary = 0;
+                if (thisplayer.UpcomingSalary === null) {
+                    thisplayer.UpcomingSalary = 0;
                 }
             });
 
@@ -165,7 +141,7 @@ function fetchPlayers() {
             var theTemplate = Handlebars.compile(theTemplateScript);
             $("#playersList").append(theTemplate(allplayers));
             $("#load").css({
-              "display": "none"
+                "display": "none"
             });
 
             $(".player-to-add").on('click', function() {
@@ -208,9 +184,7 @@ function fetchPlayers() {
 
 }
 
-/*
-Index controller stuff!
-*/
+
 
 function openDatabase() {
     if (!navigator.serviceWorker) {
@@ -231,74 +205,7 @@ function openDatabase() {
     });
 }
 
-
-/* check to see if any of my watched players are injured */
-getInjuries = function(myPlayers) {
-
-    var params = {
-        // Request parameters
-    };
-
-    $.ajax({
-            url: "https://api.fantasydata.net/v3/nfl/stats/JSON/Injuries/2016REG/" + currentweek + "?" + $.param(params),
-            beforeSend: function(xhrObj) {
-                // Request headers
-                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", apikey);
-            },
-            type: "GET",
-            // Request body
-            data: "{body}",
-        })
-        .done(function(injuredPlayers) {
-
-            var myInjuredPlayers = injuredPlayers.filter(function(player) {
-                for (var i = 0; i < myPlayers.length; i++) {
-                    return player.PlayerID == myPlayers[i].PlayerID && (player.InjuryID != myPlayers[i].Injured) && (player.DeclaredInactive != myPlayers[i].Active);
-                }
-
-
-                /* TODO: use myInjuredPlayers array to update
-                status in db and send notifications */
-
-            });
-        }).
-    fail(function() {
-
-    });
-
-};
-
-/*** salary change, && scoring details!
-My current fantasydata.com subscription only allows
-changes after games. ***/
-function getWatchlistDetails(myPlayers) {
-
-    var params = {
-        // Request parameters
-    };
-
-
-    myPlayers.forEach(function(player) {
-        $.ajax({
-                url: "https://api.fantasydata.net/v3/nfl/stats/JSON/Player/" + player.PlayerID + "?" + $.param(params),
-                beforeSend: function(xhrObj) {
-                    // Request headers
-                    xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", apikey);
-                },
-                type: "GET",
-                // Request body
-                data: "{body}",
-            })
-            .done(function(data) {
-                console.log(data);
-            })
-            .fail(function() {
-
-            });
-    });
-}
-
-
+/* This is how we find the current week of the 2016 season.*/
 function setCurrentWeek() {
 
     var db = openDatabase();
@@ -353,7 +260,6 @@ function setCurrentWeek() {
                     }).catch(function(error) {
                         console.log(error);
                     });
-                    //fetchPlayers();
 
 
                 }
@@ -388,66 +294,65 @@ IndexController.prototype.registerServiceWorker = function() {
     if ('serviceWorker' in navigator) {
         //console.log('Service Worker is supported')
 
-      navigator.serviceWorker
-        .register('./service-worker.js', {
-            scope: './'
-        })
-        .then(function(reg) {
+        navigator.serviceWorker
+            .register('./service-worker.js', {
+                scope: './'
+            })
+            .then(function(reg) {
 
-            reg.pushManager.subscribe({
-              userVisibleOnly: true
-            }).then(function(sub) {
+                if (reg.waiting) {
+
+                    navigator.serviceWorker.postMessage({
+                        action: 'skipWaiting'
+                    });
+
+                    return;
+                }
 
 
-                  //subscription = JSON.stringify(sub);
+                if (reg.installing) {
+                    Controller.trackInstalling(reg.installing);
+                    return;
+                }
 
-                  firebase.database().ref(username + '/endpoints').update({
-                    subscription: JSON.stringify(sub)
-                  });
-                  // Get a key for a new Post.
-                  //var newPostKey = firebase.database().ref().child('posts').push().key;
+                reg.addEventListener('updatefound', function() {
+                    Controller.trackInstalling(reg.installing);
+                });
 
-              //console.log('endpoint:', sub.endpoint);
-              //onsole.log(subscription.keys);
-
-            }).catch(function(err){
-              console.log("could not subscribe");
-            });
-
-            if (reg.waiting) {
-
-				      navigator.serviceWorker.postMessage({ action: 'skipWaiting' });
-                return;
-            }
-
-            if (reg.installing) {
-                Controller.trackInstalling(reg.installing);
-                return;
-            }
-
-            reg.addEventListener('updatefound', function() {
-                Controller.trackInstalling(reg.installing);
+            })
+            .catch(function(err) {
+                console.log('Service Worker Failed to Register', err);
             });
 
 
 
-        })
-        .catch(function(err) {
-            console.log('Service Worker Failed to Register', err);
+        /* useful tip on preventing chrome from refreshing endlessly when
+        update on reload is checked (from Jake Archibalds' wittr)*/
+        var refreshing;
+        navigator.serviceWorker.addEventListener('controllerchange', function() {
+            if (refreshing) return;
+            window.location.reload();
+            refreshing = true;
         });
 
 
+        /* Once the service worker is ready, subscribe add add the endpoint to our db!*/
+        navigator.serviceWorker.ready.then(function(reg) {
+            reg.pushManager.subscribe({
+                userVisibleOnly: true
+            }).then(function(sub) {
 
-    /* useful tip on preventing chrome from refreshing endlessly when
-    update on reload is checked (from Jake Archibalds' wittr)*/
-    var refreshing;
-    navigator.serviceWorker.addEventListener('controllerchange', function() {
-        if (refreshing) return;
-        window.location.reload();
-        refreshing = true;
-    });
+                subscription = JSON.stringify(sub);
 
-  }
+                //insert endpoint into firebase DB to receive notifications
+                firebase.database().ref('mary/endpoint/').set(subscription);
+
+            }).catch(function(err) {
+                console.log("could not subscribe");
+            });
+        });
+
+    }
 
 
 };
@@ -459,16 +364,14 @@ IndexController.prototype.trackInstalling = function(worker) {
     var indexController = this;
     worker.addEventListener('statechange', function() {
         if (worker.state == 'installed') {
-            /*displayMessage("New Update available!", "update now!", "dismiss", function(worker) {
-				worker.postMessage({ action: 'skipWaiting' });
-			}, worker);*/
-      self.registration.showNotification("UPDATE AVAILABLE", {
-        body: 'Do you want to update to the newest version?',
-        icon: 'assets/images/football-launcher-96.png',
-        vibrate: [200, 100, 200, 100, 200, 100, 400],
-        tag: 'request',
 
-      });
+            self.registration.showNotification("UPDATE AVAILABLE", {
+                body: 'Do you want to update to the newest version?',
+                icon: 'assets/images/football-launcher-96.png',
+                vibrate: [200, 100, 200, 100, 200, 100, 400],
+                tag: 'request',
+
+            });
 
         }
     });
@@ -478,33 +381,7 @@ var Controller = new IndexController();
 
 
 $(document).ready(function() {
-    $('#login-modal').modal({ show: false});
-
-    checkLoggedIn();
 
     setCurrentWeek();
-
-    var db = openDatabase();
-
-    db.then(function(db) {
-
-        if (!db) {
-            console.log('No database!');
-            return;
-        }
-
-        var tx = db.transaction('myplayers', 'readwrite');
-        var store = tx.objectStore('myplayers');
-
-        return store.getAll();
-    }).catch(function(err) {}).then(function(response) {
-        if (response.length === 0) {
-            /* no watched players to check...dont bother calling the api */
-
-        } else {
-            //getInjuries(response);
-            //getWatchlistDetails(response);
-        }
-    });
 
 });

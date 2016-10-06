@@ -14,23 +14,40 @@
 </head>
 
 <body>
-  
-  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    	  <div class="modal-dialog">
-				<div class="loginmodal-container">
-					<h1>Login to Your Account</h1><br>
-				  <form>
-					<input type="text" name="user" placeholder="Username">
-					<input type="password" name="pass" placeholder="Password">
-					<input type="submit" name="login" class="login loginmodal-submit" value="Login">
-				  </form>
 
-				  <div class="login-help">
-					<a href="#">Register</a> - <a href="#">Forgot Password</a>
-				  </div>
-				</div>
-			</div>
-		</div>
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="loginmodal-container">
+                <h1>Login to Your Account</h1><br>
+                <form id='login-form'>
+                    <input type="email" name="email" placeholder="email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="submit" name="login" class="login loginmodal-submit" value="Login">
+                </form>
+
+                <div class="login-help">
+                    <a href="#" id='register'>Register</a> - <a href="#" id='forgot-password'>Forgot Password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="loginmodal-container">
+                <h1>Register Account</h1><br>
+                <form id='register-form'>
+                    <input type="email" name="email" placeholder="email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="submit" name="login" class="login loginmodal-submit" value="Register">
+                </form>
+
+                <div class="login-help">
+                    <a href="#" id='login'>Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <header class="jumbotron">
         <div class='container-fluid'>
@@ -53,67 +70,66 @@
     </nav>
 
     <script id="my-players-list" type="text/x-handlebars/template">
-      <ul class='list-group' id='myPlayersList'>
-      {{#each this}}
-      <li class='list-group-item'>
-        <span class='rank'><span class='sr-only'>Rank: </span>{{getIndex @index}}</span><img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
-        <div class='playerContent'>
-          <span><span class='sr-only'>player name: </span>{{this.Name}}</span>
-          <div><span><span class='sr-only'>position: </span>{{this.Position}}
-            <b><span class='sr-only'>team: </span>{{this.Team}}</b>
-          </span>
-          <span class='rankChange'></span></div>
+        <ul class='list-group' id='myPlayersList'>
+            {{#each this}}
+            <li class='list-group-item'>
+                <span class='rank'><span class='sr-only'>Rank: </span>{{getIndex @index}}</span><img class="playerPhoto" src="{{this.PhotoUrl}}" alt="{{this.Name}} Headshot">
+                <div class='playerContent'>
+                    <span><span class='sr-only'>player name: </span>{{this.Name}}</span>
+                    <div><span><span class='sr-only'>position: </span>{{this.Position}}
+                        <b><span class='sr-only'>team: </span>{{this.Team}}</b>
+                        </span>
+                        <span class='rankChange'></span></div>
 
-        </div>
-          <span class='currentSalary'><span class='sr-only'>Current Salary</span>${{this.UpcomingSalary}}</span>
-        <button class='btn btn-primary player-to-remove' id="{{this.PlayerID}}"><span class='sr-only'>Remove {{this.Name}} from watchlist</span>-</button>
-      </li>
-      {{/each}}
-      </ul>
+                </div>
+                <span class='currentSalary'><span class='sr-only'>Current Salary</span>${{this.UpcomingSalary}}</span>
+                <button class='btn btn-primary player-to-remove' id="{{this.PlayerID}}"><span class='sr-only'>Remove {{this.Name}} from watchlist</span>-</button>
+            </li>
+            {{/each}}
+        </ul>
     </script>
 
     <main>
-      <nav>
-        <form>
-        <div class="form-group">
-          <label for="namequery">Player Search</label>
-          <input type="text" class="form-control" id="namequery">
-        </div>
-        <div class="form-group">
-            <fieldset class="positions">
-                <legend class='sr-only'>Position </legend>
-                <input type="radio" id="all" class='positionInput' name="rating" value="all" />
-                <label for="all" title="All Positions">All</label>
-                <input type="radio" id="qb" class='positionInput' name="rating" value="qb" />
-                <label for="qb" title="Quarterback">QB</label>
-                <input type="radio" id="rb" class='positionInput' name="rating" value="rb" />
-                <label for="rb" title="Running Back">RB</label>
-                <input type="radio" id="wr" class='positionInput' name="rating" value="wr" />
-                <label for="wr" title="Wide Receiver">WR</label>
-                <input type="radio" id="te" class='positionInput' name="rating" value="te"/>
-                <label for="te" title="Tight End">TE</label>
-                <input type="radio" id="flex" class='positionInput' name="rating" value="flex"/>
-                <label for="flex" title="Flex">FLEX</label>
-            </fieldset>
-        </div>
-      </form>
-      </nav>
+        <nav>
+            <form>
+                <div class="form-group">
+                    <label for="namequery">Player Search</label>
+                    <input type="text" class="form-control" id="namequery">
+                </div>
+                <div class="form-group">
+                    <fieldset class="positions">
+                        <legend class='sr-only'>Position </legend>
+                        <input type="radio" id="all" class='positionInput' name="rating" value="all" />
+                        <label for="all" title="All Positions">All</label>
+                        <input type="radio" id="qb" class='positionInput' name="rating" value="qb" />
+                        <label for="qb" title="Quarterback">QB</label>
+                        <input type="radio" id="rb" class='positionInput' name="rating" value="rb" />
+                        <label for="rb" title="Running Back">RB</label>
+                        <input type="radio" id="wr" class='positionInput' name="rating" value="wr" />
+                        <label for="wr" title="Wide Receiver">WR</label>
+                        <input type="radio" id="te" class='positionInput' name="rating" value="te" />
+                        <label for="te" title="Tight End">TE</label>
+                        <input type="radio" id="flex" class='positionInput' name="rating" value="flex" />
+                        <label for="flex" title="Flex">FLEX</label>
+                    </fieldset>
+                </div>
+            </form>
+        </nav>
         <div id="myPlayersList"></div>
 
     </main>
 
     <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
     <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyC3tNQLuYb9g9wiaQc6Hn-peZC3Kpm0Ixk",
-        authDomain: "fantasy-football-watchlist.firebaseapp.com",
-        databaseURL: "https://fantasy-football-watchlist.firebaseio.com",
-        storageBucket: "fantasy-football-watchlist.appspot.com",
-        messagingSenderId: "673776022250"
-      };
-      firebase.initializeApp(config);
-
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyC3tNQLuYb9g9wiaQc6Hn-peZC3Kpm0Ixk",
+            authDomain: "fantasy-football-watchlist.firebaseapp.com",
+            databaseURL: "https://fantasy-football-watchlist.firebaseio.com",
+            storageBucket: "fantasy-football-watchlist.appspot.com",
+            messagingSenderId: "673776022250"
+        };
+        firebase.initializeApp(config);
     </script>
     <script src="assets/js/vendor.js"></script>
     <script src="assets/js/app.js"></script>

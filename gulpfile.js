@@ -66,6 +66,8 @@ gulp.task('copy', function() {
 			.pipe(gulp.dest('dist/assets/data'));
 		gulp.src('src/assets/images/*')
 			.pipe(gulp.dest('dist/assets/images'));
+			gulp.src('src/assets/images/teams/*')
+				.pipe(gulp.dest('dist/assets/images/teams'));
 		gulp.src('src/assets/fonts/*')
 			.pipe(gulp.dest('dist/assets/fonts'));
 		gulp.src('src/manifest.json')
@@ -82,6 +84,8 @@ gulp.task('connectWithBrowserSync', function() {
 		server: './dist'
 	});
 });
+
+
 
 /*
 watch for changes in our code to we can auto-reload

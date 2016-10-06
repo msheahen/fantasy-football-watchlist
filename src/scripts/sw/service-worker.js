@@ -50,16 +50,6 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('fetch', function(event) {
 
-	/*
-
-	if (requestUrl.origin === location.origin) {
-    if (requestUrl.pathname.startsWith('/photos/')) {
-      event.respondWith(servePhoto(event.request));
-      return;
-    }
-  }
- */
-
 	event.respondWith(
 		caches.match(event.request).then(function(response) {
 			return response || fetch(event.request);
@@ -68,30 +58,37 @@ self.addEventListener('fetch', function(event) {
 
 });
 
-function servePhoto(request) {
-  var storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
-
-  return caches.open(contentImgsCache).then(function(cache) {
-    return cache.match(storageUrl).then(function(response) {
-      if (response) return response;
-
-      return fetch(request).then(function(networkResponse) {
-        cache.put(storageUrl, networkResponse.clone());
-        return networkResponse;
-      });
-    });
-  });
-}
 
 self.addEventListener('message', function(event) {
   if (event.data.action === 'skipWaiting') {
     self.skipWaiting();
+    reg.pushManager.subscribe({
+        userVisibleOnly: true
+    }).then(function(sub) {
+
+        console.log(sub);
+        //subscription = JSON.stringify(sub);
+        // Create a callback to handle the result of the authentication
+        firebase.database().ref('mary/endpoints/').set({
+          endpoint: sub.subscription,
+        });
+
+        //username = sub.endpoint;
+        // Get a key for a new Post.
+        //var newPostKey = firebase.database().ref().child('posts').push().key;
+
+        //console.log('endpoint:', sub.endpoint);
+        //onsole.log(subscription.keys);
+
+    }).catch(function(err) {
+        console.log("could not subscribe");
+    });
   }
 });
 
 
+/* sends push notifications and payload! */
 self.addEventListener('push', function(event) {
-
 
 	var jsonobj = event.data.text();
 
@@ -101,5 +98,5 @@ self.addEventListener('push', function(event) {
     vibrate: [200, 100, 200, 100, 200, 100, 400],
     tag: 'request'
   });
-  // TODO
+
 });
