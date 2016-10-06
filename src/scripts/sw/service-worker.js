@@ -12,13 +12,13 @@ self.addEventListener('install', function(event) {
 		'./',
 		'./index.html',
     './all-players.html',
+    './schedule.html',
     './assets/js/vendor.js',
     './assets/js/app.js',
     './assets/css/bootstrap.min.css',
 		'./assets/css/main.css',
     './assets/data/players.json',
-    './assets/data/schedule.json',
-    './assets/data/teams.json'
+    './assets/data/schedule.json'
 	];
 
 	event.waitUntil(
