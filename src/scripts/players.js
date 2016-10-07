@@ -1,34 +1,3 @@
-/*************************************
-Function to filter players using the buttons at the top
-*************************************/
-filterPlayersBy = function(param) {
-
-    var filteredPlayersList;
-      if(param == "ALL"){
-        filteredPlayersList = allplayers;
-      }else if (param == "FLEX"){
-        filteredPlayersList = allplayers.filter(function(entry){
-                return entry.Position === "RB" ||
-                    entry.Position === "WR" ||
-                    entry.Position === "TE";
-              });
-            }else{
-              filteredPlayersList = allplayers.filter(function(entry){
-                return entry.Position === param;
-              });
-            }
-
-            var theTemplateScript = $("#players-list").html();
-            var theTemplate = Handlebars.compile(theTemplateScript);
-            $("#playersList").html("");
-            $("#playersList").append(theTemplate(filteredPlayersList));
-            $(".player-to-add").on('click', function() {
-                addPlayerToWatchlist($(this).attr('id'));
-            });
-
-};
-
-
 
 $(document).ready(function() {
 
@@ -99,7 +68,7 @@ $(document).ready(function() {
 
         $("#namequery").keyup(function(e){
           var filterString = $(this).val();
-
+          if(allplayers !== undefined){
           //console.log(filterString);
           filteredPlayersList = allplayers.filter(function(entry){
                   return entry.Name.toUpperCase().includes(filterString.toUpperCase());
@@ -113,6 +82,7 @@ $(document).ready(function() {
                   addPlayerToWatchlist($(this).attr('id'));
               });
 
+            }
         });
 
     }

@@ -40,25 +40,26 @@ if(path == '/' || path == '/index.html'){
   });
 
   $("#all").click(function() {
-      filterPlayersBy("ALL");
+      filterMyPlayersBy("ALL");
   });
   $("#qb").click(function() {
-      filterPlayersBy("QB");
+      filterMyPlayersBy("QB");
   });
   $("#rb").click(function() {
-      filterPlayersBy("RB");
+      filterMyPlayersBy("RB");
   });
   $("#wr").click(function() {
-      filterPlayersBy("WR");
+      filterMyPlayersBy("WR");
   });
   $("#te").click(function() {
-      filterPlayersBy("TE");
+      filterMyPlayersBy("TE");
   });
   $("#flex").click(function() {
-      filterPlayersBy("FLEX");
+      filterMyPlayersBy("FLEX");
   });
 
   $("#namequery").keyup(function(e){
+    if(myplayers !== undefined){
     var filterString = $(this).val();
 
     filteredPlayersList = myplayers.filter(function(entry){
@@ -74,7 +75,7 @@ if(path == '/' || path == '/index.html'){
 
             removePlayerFromWatchlist($(this).attr('id'));
         });
-
+      }
   });
 
 }

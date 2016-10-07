@@ -101,35 +101,73 @@ removePlayerFromWatchlist = function(id) {
 
 };
 
+
+
 /*************************************
 Function to filter players using the buttons at the top
 *************************************/
 filterPlayersBy = function(param) {
 
-    var filteredPlayersList;
-      if(param == "ALL"){
-        filteredPlayersList = allplayers;
-      }else if (param == "FLEX"){
-        filteredPlayersList = allplayers.filter(function(entry){
+    if (allplayers !== undefined) {
+
+        var filteredPlayersList;
+        if (param == "ALL") {
+            filteredPlayersList = allplayers;
+        } else if (param == "FLEX") {
+            filteredPlayersList = allplayers.filter(function(entry) {
                 return entry.Position === "RB" ||
                     entry.Position === "WR" ||
                     entry.Position === "TE";
-              });
-            }else{
-              filteredPlayersList = allplayers.filter(function(entry){
-                return entry.Position === param;
-              });
-            }
-
-            var theTemplateScript = $("#players-list").html();
-            var theTemplate = Handlebars.compile(theTemplateScript);
-            $("#playersList").html("");
-            $("#playersList").append(theTemplate(filteredPlayersList));
-            $(".player-to-add").on('click', function() {
-                addPlayerToWatchlist($(this).attr('id'));
             });
+        } else {
+            filteredPlayersList = allplayers.filter(function(entry) {
+                return entry.Position === param;
+            });
+        }
 
+        var theTemplateScript = $("#players-list").html();
+        var theTemplate = Handlebars.compile(theTemplateScript);
+        $("#playersList").html("");
+        $("#playersList").append(theTemplate(filteredPlayersList));
+        $(".player-to-add").on('click', function() {
+            addPlayerToWatchlist($(this).attr('id'));
+        });
+    }
 };
+
+/*************************************
+Function to filter watchlist players using the buttons at the top
+*************************************/
+filterMyPlayersBy = function(param) {
+
+    if (myplayers !== undefined) {
+
+        var filteredPlayersList;
+        if (param == "ALL") {
+            filteredPlayersList = myplayers;
+        } else if (param == "FLEX") {
+            filteredPlayersList = myplayers.filter(function(entry) {
+                return entry.Position === "RB" ||
+                    entry.Position === "WR" ||
+                    entry.Position === "TE";
+            });
+        } else {
+            filteredPlayersList = myplayers.filter(function(entry) {
+                return entry.Position === param;
+            });
+        }
+
+        var theTemplateScript = $("#my-players-list").html();
+        var theTemplate = Handlebars.compile(theTemplateScript);
+        $("#myPlayersList").html("");
+        $("#myPlayersList").append(theTemplate(filteredPlayersList));
+        $(".player-to-remove").on('click', function() {
+
+            removePlayerFromWatchlist($(this).attr('id'));
+        });
+    }
+};
+
 
 
 
